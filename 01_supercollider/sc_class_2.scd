@@ -118,7 +118,9 @@ SynthDef(
 a. 기본적인 소리들 - 복잡한 소리를 만들기 위한 작은 부품(모듈)들이라고 생각합시다
 {SinOsc.ar(440, mul: 0.2)!2}.scope;
 {Saw.ar(440, mul: 0.2)!2}.play;
+{Saw.ar(440, mul: 0.2)!2}.plot(1); // 그래프로 그려보기 : plot(시간(sec))
 {Pulse.ar(200, mul: 0.2)!2}.play;
+{Pulse.ar(200, mul: 0.2)!2}.plot(2);
 {PinkNoise.ar(0.2)!2}.play;
 
 이밖에도 sc에는 수많은 소리들이 있음.
