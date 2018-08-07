@@ -40,54 +40,31 @@ class Bubble {
 
     if (pos_y < 10) {
       isAlive = false;
-      //sendOsc(0, 0, 0);
     } else if (pos_y > (height - 10) ) {
       isAlive = true;
-      //sendOsc(1, 0, 0);
     }
   }
 
 
+  // 함수로 만들기 복습
   void setBrightness() {
-    howBig = 50;
 
     random_ = random(1.2, 5.3);
-
     strokeBrightness = random_ * 40 * (random_%0.8);
     stroke(strokeBrightness);
 
     float strokeThickness = random_ * 0.3;
-
-
-    if (strokeBrightness > 30.0) {
-      //println("more 30");
-      if (strokeThickness > 1.589) {
-        strokeThickness = 4.0;
-        sendOsc(2, pos_x, pos_y);
-        howBig = 200 + random(100);
-      }
-    } else {
-      //println("less 30");
-    }
-
-
     strokeWeight(strokeThickness);
   }
+  
+  
 
   void draw() {
 
-    //float random_ = random(1.2, 5.3);
     setBrightness();
 
     noFill();
-    if (howBig > 190) {
-      fill(255);
-      //pos_x = random(width);
-      ellipse(pos_x, pos_y, howBig/random_, howBig/random_);
-      //pos_x = (pos_x + howBig)%width;
-      //pos_x = random(width);
-    } else {
-      ellipse(pos_x, pos_y, howBig/random_, howBig/random_);
-    }
+
+    ellipse(pos_x, pos_y, howBig/random_, howBig/random_);
   }
 }

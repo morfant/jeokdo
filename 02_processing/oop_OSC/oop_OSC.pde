@@ -1,4 +1,15 @@
 
+/*
+
+개념도
+
+https://drive.google.com/open?id=1Hb5XqUgjJNJCh-q9WIE6NIDMaf519AOBKh-nQRjgZSw
+
+
+*/
+
+
+
 /* 라이브러리?
 
 준비된 기본 기능 이외의 것들을 추가로 사용하기 위해 만들어진 것 - add on, 확장 기능..
@@ -72,28 +83,22 @@ void draw() {
     
     bubbles[i].draw();
   }
-      
   
   
 }
 
+/***** Out of draw() *****/
+
+
+
+
+
+
+
+
 /******************************* 
          OSC handling
 ********************************/
-
-// TEST
-// mousePressed() : 마우스를 클릭 했을 때 - 안의 내용이 - 실행되는 함수
-//void mousePressed() {
-  
-//  // 지역 변수의 사용 - 한 번쓰고 버린다
-//  OscMessage m = new OscMessage("/click");
-  
-//  m.add(8880);
-//  // 255 이라는 int 을 메시지로 보낸다.
-
-//  /* send the message */
-//  oscP5.send(m, oscDestAddr); 
-//}
 
 
 // osc send를 위해 별도의 함수를 만든다.
@@ -110,34 +115,20 @@ void sendOsc(int msg_1, float msg_2, float msg_3) { //
 }
 
 
-void sendOsc_pos(float msg_1, float msg_2) { // 
-  
-  OscMessage m = new OscMessage("/");
-  
-  m.add(msg_1);
-  m.add(msg_2);
-
-  /* send the message */
-  oscP5.send(m, oscDestAddr);
-}
-
-
 // osc 메시지가 수신 될 때 실행되는 함수
 void oscEvent(OscMessage msg) {
 
   /*
-  
   OSC 메시지의 구조
-  Address Pattern
-  
-  
-  Type Tag
-  
+  : 물리적 주소(ip addr) + Address Pattern (+ type 매칭)  
   */
   
-  println(msg.get(0).intValue());
+  // sc에서 osc를 수신할 때와 마찬가지로 메시지가 어떤 형태로 들어오는지 파악해야 한다. 보내는 쪽에서 정한 형태를 참고. 
+  println(msg.arguments()); // 전체 메시지
+  println(msg.arguments()[0]); // 전체 메시지 중 첫 번째
+  
   print("### received an osc message.");
-  print(" addrpattern: " + msg.addrPattern()); // print() 명령 - 콘솔에 표시
+  print(" addrpattern: " + msg.addrPattern()); // print() 명령 - 콘솔에 표시 ==> 원하는 addrPattern만을 수신할 수도 있다.
   println(" typetag: " + msg.typetag()); // print() 명령에서 '+'연산의 의미
   
   /*
@@ -145,4 +136,31 @@ void oscEvent(OscMessage msg) {
   addrPattern, typetag
   */
   
+}
+
+
+
+
+
+// TEST
+// mousePressed() : 마우스를 클릭 했을 때 - 안의 내용이 - 실행되는 함수
+
+
+
+void mousePressed() {
+  
+  
+  //println(mouseX);
+  //println(mouseY);
+  
+  // 지역 변수의 사용 - 한 번쓰고 버린다
+  //OscMessage m = new OscMessage("/click");
+  OscMessage m = new OscMessage("/sc_is_waiting_you");
+  
+  m.add(3); // 사람 구분자
+  m.add(mouseX);
+  m.add(mouseY);
+  // 255 이라는 int 을 메시지로 보낸다.
+
+  oscP5.send(m, oscDestAddr); 
 }
