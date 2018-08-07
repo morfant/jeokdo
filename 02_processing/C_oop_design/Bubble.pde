@@ -7,6 +7,8 @@ class Bubble {
   boolean isAlive = true;
   float howBig;
   float weight;
+  float strokeBrightness = 100;
+  float random_ = 1.0;
 
 
 
@@ -27,13 +29,11 @@ class Bubble {
   void floating() {
 
     pos_y = pos_y - 1;
-
   }
 
   void down() {
 
     pos_y = pos_y + 1;
-    
   }
 
   void isDead() {
@@ -46,13 +46,25 @@ class Bubble {
   }
 
 
+  // 함수로 만들기 복습
+  void setBrightness() {
+
+    random_ = random(1.2, 5.3);
+    strokeBrightness = random_ * 40 * (random_%0.8);
+    stroke(strokeBrightness);
+
+    float strokeThickness = random_ * 0.3;
+    strokeWeight(strokeThickness);
+  }
+  
+  
+
   void draw() {
 
-    float random_ = random(1.2, 5.3);
-    stroke(random_ * 40 * (random_%0.8) );
-    strokeWeight(random_ * 0.3);
+    setBrightness();
 
     noFill();
+
     ellipse(pos_x, pos_y, howBig/random_, howBig/random_);
   }
 }
