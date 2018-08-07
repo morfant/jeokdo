@@ -7,16 +7,44 @@
 	| msg, time, addr, recvPort |
 
 	// post window에 표시 해보기
-	msg.postln;
-	time.postln;
-	addr.postln;
-	recvPort.postln;
+	("msg: " + msg).postln;
+	// ("time: " + time).postln;
+	// ("addr: " + addr).postln;
+	// ("recvPort: " + recvPort).postln;
 
-	("hello osc " + msg).postln; // '+' 연산자
 
 	// 이 부분을 소리와 연결 시키면 됩니다만..
 
-}, '/click'); // def style
+	// msg[0].postln;
+	msg[1].postln;
+	// msg[2].postln;
+
+	if (msg[1] == 1, {
+
+		Synth(\deadOrAlive, [\freq, (40 + 12.rand).midicps, \amp, 0.3]);
+
+
+	});
+
+	if (msg[1] == 0, {
+		Synth(\deadOrAlive, [\freq, (66 + 12.rand).midicps, \amp, 0.2]);
+
+	}
+	);
+
+	if (msg[1] == 2, {
+		msg[2].postln;
+		// var panPos = msg[2]/700 - 1;
+		// Synth(\deadOrAlive, [\freq, (86 + 4.rand).midicps, \amp, 0.2, \lr, msg[2]/700 - 1]);
+		Synth(\bubble, [\freq, 50 + (900 - msg[3]), \amp, 0.2, \lr, msg[2]/700 - 1]);
+
+	}
+	);
+
+
+
+
+}, '/dead');
 )
 
 
