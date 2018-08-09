@@ -1,8 +1,7 @@
 <슈콜(sc) 딱 두가지만 배워서 만드는 가벼운 전자음악>
 
 
-두 번째 시간 - 소리만들기(Synth)
-
+두 번째 시간 - 소리 만들기(Synth)
 
 
 --------------------------------------------------------------------------------
@@ -19,10 +18,10 @@
 ~mel = Pdef(\seq_mel,
 	Pbind(
 		\instrument, \gobeat,
-		// \freq, Pseq([ 52, 54, 56, 57, 56, 54, 56 ], inf).midicps,
-		\freq, Pseq([ 52, 54, 56, 57, 56, 54, (55 + 0.5) ], inf).midicps, // 미분음의 사용. 랜덤한 느낌을 주고 싶다면?
+		\freq, Pseq([ 52, 54, 56, 57, 56 ], inf).midicps,
+		// \freq, Pseq([ 70 ] + 12, inf).midicps, // 미분음의 사용. 랜덤한 느낌을 주고 싶다면?
 		\dur, Pseq([0.75, 0.25, 0.75, 0.25, 0.5, 0.5, 1]*0.1, inf),
-		\delta, Pseq([0.75, 0.25, 0.75, 0.25, 0.5, 0.5, 1], inf), // 합이 4의 배수 -> 3의 배수로 바꾸면?
+		\delta, Pseq([0.75, 0.25, 0.75, 0.25, 1], inf), // 합이 4의 배수 -> 3의 배수로 바꾸면?
 		\amp, Pseq([0.3, 0.2, 0.3, 0.2, 0.3, 0.3, 0.31], inf)
 	)
 ).play;
@@ -52,9 +51,9 @@ SynthDef(\gobeat, {|freq = 240, dur = 0.2, gate = 1, amp = 0.5|
 SynthDef( // 이제부터 SynthDef를 만들겠다
 	\gobeat, // SynthDef의 이름. 'gobeat', "gobeat" 도 가능
 
-	{ // { 열고,
+	{
 
-		| // '|' 열고
+		|
 		    freq = 240, dur = 0.2, gate = 1, amp = 0.5
 
 		/*
@@ -66,13 +65,15 @@ SynthDef( // 이제부터 SynthDef를 만들겠다
 
 		| // '|' 닫고 (모양이 같아서 @.@)
 
-		var env = EnvGen.kr(Env.perc(0.01, dur), gate, doneAction: 2); // var(=variable, 로컬 변수 선언시 지켜야만 하는 규칙)
+		var env = EnvGen.kr(Env.perc(0.01, dur), gate, doneAction: 2);
+		// var(=variable, 로컬 변수 선언시 지켜야만 하는 규칙)
 
 		var sig = SinOsc.ar(freq, 0, env); // 역시 var 선언. 그 안의 구체적 내용은 아래에서 설명.
+		// SinOsc.ar(
 
 		Out.ar(0, Pan2.ar(sig)*amp); // SynthDef를 만들때 반드시 필요! 소리가 출력(Out)되는 라인을 달아주는 것.
 
-	} // } 닫고
+	}
 
 ).add; // 여기까지 정의한 SynthDef를 sc가 사용할 수 있게 서버에 추가한다. (sc는 'client - server' 구조)
 
@@ -115,6 +116,12 @@ SynthDef(
 #2 SynthDef를 구성하는 요소들 - 본격적으로 소리를 들어볼까요. FreqScope, scope, levelmeter 준비
 --------------------------------------------------------------------------------
 
+악기 = '소리' 와 '엔벨롭'
+SynthDef = Oscillator 와 Envelope
+
+악기도
+https://drive.google.com/open?id=1FAh0MKSI6Z4FIwSLT4dhdyYJGtWVAcZP6u10qKxLIgY
+
 a. 기본적인 소리들 - 복잡한 소리를 만들기 위한 작은 부품(모듈)들이라고 생각합시다
 {SinOsc.ar(440, mul: 0.2)!2}.scope;
 {Saw.ar(440, mul: 0.2)!2}.play;
@@ -133,8 +140,12 @@ Env.linen().plot;
 Env.perc().plot;
 Env.adsr().plot; // a = Attack Time, d = Decay Time, s = Sustain Level, r = Release Time
 
+
+WhiteNoise.ar(1, 0)
+WhiteNoise.ar(add: 0, mul: 1)
+
 // non-sustained envelope
-{WhiteNoise.ar(mul: 0.2)*EnvGen.kr(Env.linen(), doneAction: 2)!2}.play;
+{WhiteNoise.ar(mul: 0.2)*EnvGen.kr(Env.linen(), gate: 1, doneAction: 2)!2}.play;
 {WhiteNoise.ar(mul: 0.2)*EnvGen.kr(Env.perc(), doneAction: 2)!2}.play;
 
 // sustained envelope
@@ -152,7 +163,7 @@ Env만 가지고는 Env에 담긴 내용을 사용할 수 없다.
 ---------------------------------------------
 
 
-어느자리에 어떤 아규먼트가 들어가야 하는지를 찾는 방법
+어느 자리에 어떤 아규먼트가 들어가야 하는지를 찾는 방법
 : ***** 도움말 문서을 참고하는 방법을 알아봅시다 *****
 
 
@@ -177,14 +188,14 @@ pos: -1 은 왼쪽, 1 은 오른쪽을 나타냄
 
 
 --------------------------------------------------------------------------------
-#3 SynthDef로 소리내기(SynthDef -> Synth) : SynthDef 와 Synth는 다르다
+#3 SynthDef로 소리내기(SynthDef -> Synth) : SynthDef 와 Synth 는 다르다
 --------------------------------------------------------------------------------
 
 SynthDef가 소리에 대한 설계도라면 그것으로부터 만들어지는 Synth는 소리 그 자체이다.
 
 
 (
-SynthDef("gobeat", {|freq = 240, dur = 0.2, gate = 1, amp = 0.5|
+SynthDef("tsetse", {|freq = 240, dur = 0.2, gate = 1, amp = 0.5|
 	var env = EnvGen.kr(Env.perc(0.01, dur), gate, doneAction: 2);
 	var sig = SinOsc.ar(freq, 0, env);
 	Out.ar(0, Pan2.ar(sig)*amp);
@@ -193,8 +204,9 @@ SynthDef("gobeat", {|freq = 240, dur = 0.2, gate = 1, amp = 0.5|
 
 
 ~s1 = Synth(\gobeat);  // 실행 후 Post window 확인
-~s1 = Synth(\gobeat, ['freq', 600]); // 아규먼트(argument)에 변화 주기
-~s1 = Synth(\gobeat, ["freq", 200, \amp, 0.2]); // 여러 아규먼트(argument)에 변화 주기
+~s1 = Synth(\tt, ['freq', 600]); // 아규먼트(argument)에 변화 주기
+~s1 = Synth(\gobeat, ["freq", 2200, \amp, 0.2]); // 여러 아규먼트(argument)에 변화 주기
+
 
 
 어떤 아규먼트가 'dur'라는 이름을 가진다고 할 때,
@@ -210,26 +222,27 @@ SynthDef("gobeat", {|freq = 240, dur = 0.2, gate = 1, amp = 0.5|
 단발적인 소리 -> 지속되는 소리
 
 퀴즈
-아래의 SynthDef의 Env를 Env.adsr로 바꾸어 봅시다.
+아래의 SynthDef의 Env를 Env.adsr 로 바꾸어 봅시다.
+
+{EnvGen.kr(Env.adsr(0.3, 0.7, 0.8, 1))}.plot(3);
 
 (
 SynthDef("gobeat", {|freq = 240, atk = 0.2, dec = 1, rel = 5, gate = 1, amp = 0.5|
-	var env = EnvGen.kr(Env.perc(0.01, 0.2), gate, doneAction: 2);
+	var env = EnvGen.kr(Env.adsr(atk, dec, releaseTime: rel, curve: 2), gate, doneAction: 2);
 	var sig = SinOsc.ar(freq, 0, env);
 	Out.ar(0, Pan2.ar(sig)*amp);
 }).add;
-) // 실행 후 Post window 확인
+)
 
 ~s = Synth(\gobeat);
 ~s = Synth(\gobeat, [\atk, 2, \dec, 0.1, \rel, 10]); // 아규먼트와 함께 실행하기
 ~s.release();
-~s.release(2);
-~s.free;
+~s.release(0.1);
 
-
+	~s;
 
 소리가 나고 있는 것에 변화주기(set)
-~s.set(\freq, 400);
+~s.set(\freq, 300);
 ~s.set(\amp, 0.1);
 ~s.set(\freq, 200, \amp, 0.5); // 여러 개의 아규먼트를 동시에 제어 가능
 ~s.release();
@@ -246,14 +259,30 @@ SynthDef("gobeat_saw", {|freq = 140, atk = 0.2, sus = 1, rel = 5, gate = 1, amp 
 ) // 실행 후 Post window 확인
 
 
+(
+SynthDef("gobeat_noise", {|freq = 140, atk = 0.2, sus = 1, rel = 5, gate = 1, amp = 0.5|
+	var env = EnvGen.kr(Env.linen(atk, sus, rel), gate, doneAction: 2);
+	var sig = WhiteNoise.ar(amp);
+	Out.ar(0, Pan2.ar(sig * env) * 0.5);
+}).add;
+) // 실행 후 Post window 확인
+
+~noise = Synth(\gobeat_noise, [\amp, 0.1]);
+~noise = Synth(\gobeat_noise, [\amp, 0.4, \atk, 0.01, \sus, 0.1, \rel, 0.1]);
+~noise = Synth(\gobeat_noise, [\amp, 0.6, \atk, 0.1, \sus, 0.2, \rel, 0.1]);
+~noise = Synth(\gobeat_noise, [\amp, 0.4, \atk, 0.01, \sus, 0.2, \rel, 0.1]);
+
 퀴즈
 gobeat_pulse, gobeat_noise 중에 하나를 만들어 소리내 봅시다!
 
+~saw1 = Synth(\gobeat_saw);
 
-~saw1 = Synth(\gobeat_saw, [\freq, 100]);~saw2 = Synth(\gobeat_saw, [\freq, 330]);
+~saw1 = Synth(\gobeat_saw, [\freq, 100]); ~saw2 = Synth(\gobeat_saw, [\freq, 330]);
+
 ~saw1 = Synth(\gobeat_saw, [\freq, 40.midicps]);~saw2 = Synth(\gobeat_saw, [\freq, 44.midicps]);
 ~saw1 = Synth(\gobeat_saw, [\freq, 43.midicps]);~saw2 = Synth(\gobeat_saw, [\freq, 47.midicps]);
-수동으로 번갈아 가면서 실행해보기 ------> 이걸 자동화 하고 싶으면? 어제 배웠던 Pseq에 적용!!!
+
+수동으로 번갈아 가면서 실행해보기 ------> 이걸 자동화 하고 싶으면? 지난 시간 배웠던 Pseq에 적용!!!
 ~saw1 = Synth(\gobeat_saw, [\freq, 42.midicps]);~saw2 = Synth(\gobeat_saw, [\freq, 45.midicps]);
 
 
@@ -280,6 +309,22 @@ gobeat_pulse, gobeat_noise 중에 하나를 만들어 소리내 봅시다!
 	)
 ).play;
 )
+
+
+
+(
+~noise_ = Pdef(\seq_noise_,
+	Pbind(
+		\instrument, \gobeat_noise,
+		\atk, Pseq([0.01, 0.01, 0.1, 0.01], inf),
+		\sus, Pseq([0.1, 0.1, 0.2, 0.2], inf), // 직접 이름 붙인 아규먼트 'sus'
+		\rel, Pseq([0.1], inf), // 직접 이름 붙인 아규먼트 'rel'
+		\delta, Pseq([1, 1.5, 1.5, 4]/2, inf),
+		\amp, Pseq([0.4, 0.4, 0.6, 0.4], inf)
+	)
+).play;
+)
+
 
 
 어제 공부했던 \dur는 기본적으로 sc에서 지원하는 아규먼트이긴 하나 SynthDef의 정의에 따라 적용되는 경우도 있고 그렇지 않은 경우도 있다. 확실하게 하려면 위의 예제 처럼 직접 envelope의 요소를 제어하는 것이 좋다.
@@ -333,7 +378,7 @@ SynthDef("gobeat_com_2", {
 )
 
 b = Synth(\gobeat_com_2, [\amp, 1.0]);
-b.set(\freq, 300, \sin_freq, 3, \pulse_freq, 8, \amp, 1.9);
+b.set(\freq, 100, \sin_freq, 10, \pulse_freq, 2, \amp, 1.9);
 
 
 
