@@ -1,17 +1,20 @@
+// 워크숍 자료 링크
+// https://drive.google.com/open?id=1I24XUkNs3vGfAf8V3uLMbBxnnnv6Zm_t
+
+
 /*
 복습
 
 - 함수 만들기에 숙달되기
 
-- 이전 시간의 예제 이렇게 저렇게 변형 해보기
-
-- backgrond() 와 레이어의 개념
+- backgrond()와 레이어의 개념
 
 - frame의 개념
 
+- 이전 시간의 예제 이렇게 저렇게 변형 해보기
+  : tweak 기능
+
 */
-
-
 
 
 /*
@@ -84,7 +87,7 @@
 
 
 boolean flag;
-Bubble[] bubbles = new Bubble[100];
+Bubble[] bubbles = new Bubble[10];
 
 void setup() {
 
@@ -102,7 +105,7 @@ void setup() {
 void draw() {
   
   // draw() 안에서 background()의 역할 
-  background(255);
+  //background(193);
 
 
   if (!flag) {
@@ -123,6 +126,4 @@ void draw() {
     bubbles[i].draw();
   }
       
-  
-  
 }

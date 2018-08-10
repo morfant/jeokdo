@@ -2,10 +2,10 @@
 
 (
 
-~destAddr_0 = NetAddr("127.0.0.1", 12000); // ip 주소 확인 후 변경
-~destAddr_1 = NetAddr("127.0.0.1", 12000);
-~destAddr_2 = NetAddr("127.0.0.1", 12000);
-~destAddr_3 = NetAddr("127.0.0.1", 12000);
+~destAddr_0 = NetAddr("192.168.0.20", 12000); // ip 주소 확인 후 변경
+~destAddr_1 = NetAddr("192.168.0.17", 12000);
+~destAddr_2 = NetAddr("192.168.0.15", 12000);
+~destAddr_3 = NetAddr("192.168.0.19", 12000);
 
 
 

@@ -4,8 +4,6 @@
 개념도
 
 https://drive.google.com/open?id=1Hb5XqUgjJNJCh-q9WIE6NIDMaf519AOBKh-nQRjgZSw
-
-
 */
 
 
@@ -37,12 +35,13 @@ import netP5.*;
 OscP5 oscP5;
 NetAddress oscDestAddr;
 String OSC_DEST_ADDR = "127.0.0.1"; // OSC Destination Address
+// 127.0.0.1 = localhost = 내 컴퓨터
+
 int SC_OSC_PORT = 57120; // sc 는 osc 통신에 고정된 포트를 사용한다
-
-
 
 boolean flag;
 Bubble[] bubbles = new Bubble[100];
+
 
 void setup() {
 
@@ -57,12 +56,13 @@ void setup() {
   
   // OSC 통신을 위한 준비
   // 1) 받기
-  oscP5 = new OscP5(this, 12000);
+  oscP5 = new OscP5(this, 12000); // 프로세싱이 receive 할 포트 번호
   
   // 2) 보내기
   oscDestAddr = new NetAddress(OSC_DEST_ADDR, SC_OSC_PORT); // addr, port
   
 }
+
 
 void draw() {
 
@@ -83,6 +83,8 @@ void draw() {
     
     bubbles[i].draw();
   }
+  
+  //saveFrame("frames/####.png");
   
   
 }
@@ -145,8 +147,7 @@ void oscEvent(OscMessage msg) {
 // TEST
 // mousePressed() : 마우스를 클릭 했을 때 - 안의 내용이 - 실행되는 함수
 
-
-
+/*
 void mousePressed() {
   
   
@@ -157,10 +158,11 @@ void mousePressed() {
   //OscMessage m = new OscMessage("/click");
   OscMessage m = new OscMessage("/sc_is_waiting_you");
   
-  m.add(3); // 사람 구분자
+  m.add(0); // 사람 구분자
   m.add(mouseX);
   m.add(mouseY);
   // 255 이라는 int 을 메시지로 보낸다.
 
   oscP5.send(m, oscDestAddr); 
 }
+*/

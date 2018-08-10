@@ -3,10 +3,20 @@
 
 ( // receive
 
-~osc_receive.free;
+~osc_receive.free; // 메모리에서 지운다
 
-~osc_receive = OSCFunc({
+~osc_receive = OSCFunc(
+	{
 	| msg, time, addr, recvPort | // argument, 혹은 parameter 라고 부른다.
+
+
+		// 프로세싱의 함수 형태와 비교
+		// OSCFunc(msg, time, addr, recvPort) {
+		//
+		// 	println("msg: " + msg); // msg: hi
+		//
+		//
+		// }
 
 	// .postln 명령을 붙여 post window에 표시 해보기
 	("msg: " + msg).postln;
