@@ -1,6 +1,6 @@
 var pos_x = 0;
 var pos_y = 0;
-var spd = 1;
+var spd = 100;
 
 function setup() {
   // put setup code here
