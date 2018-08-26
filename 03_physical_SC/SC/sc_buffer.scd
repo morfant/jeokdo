@@ -1,8 +1,9 @@
 
------------------------- Buffer? 사용하기 ------------------------
-
-
+------------------------ Buffer? 샘플러? ------------------------
 Buffer
+
+샘플을 불러와서 사용하는 일종의 ‘샘플러’.
+그 조작 가능성이 거의 무한합니다..
 
 
 파일 불러오기
@@ -56,6 +57,10 @@ SynthDef(\bufPlay, {| out = 0, buf = nil, rate = 1, loop = 1, sPos = 0, trigFreq
 
 
 ------------------------ 실시간으로 Amplitude 받기 ------------------------
+
+슬라이드 참고
+https://drive.google.com/open?id=1y1TVYOPuWhjNGWBJBXHb8kkfGkvu7XelpJMwEZbSpvE
+
 
 <SC의 구조와 메시징>
 
@@ -143,93 +148,4 @@ SynthDef(\bufPlaySend, {
 
 // 여러 아규먼트 값을 바꿔보면서 기능을 파악해 봅시다.
 ~buf_sound_1.set(\rate, 0.5, \sPos, s.sampleRate*(140.rand), \trigFreq, 0.02, \sendFreq, 30, \sendFreq, 20);
-
 ~buf_sound_1.free;
-
------------------------- 아두이노로 Serial 통신을 통해 값 보내기 ------------------------
-
-SerialPort.listDevices;
-
-<sc에서의 변수>
-지역변수 / 전역변수 / 환경변수
-
-
-<시리얼 포트의 물리적 속성>
-시리얼 포트는 하나의 하드웨어적인 연결 관이라고 생각하면 좋습니다.
-따라서 한 쪽이 먼저 점유하면 다른쪽에서 필요한 기능을 수행 할 수 없는 경우가 생깁니다.
-그런 이유로,
-슈콜에서 시리얼 포트를 열어놓으면 아두이노에서 프로그램 업로드가 안됩니다.
-반대로 아두이노에서 시리얼 모니터 창을 열어 놓으면, 슈콜에서 시리얼 포트를 열 수 없습니다.
-따라서 슈콜과 아두이노를 시리얼로 연결하는 경우 아두이노의 시리얼 모니터 창은 쓰지 않는 것으로 생각하는 것이 마음 편합니다.
-
-Function
-
-~openSerialPort = {| portName |
-	return
-	SerialPort(
-    "/dev/tty.usbserial-00000000", // Serial device 의 이름을 복사해서 붙여 줍니다.
-    baudrate: 115200,
-    crtscts: true);
-)
-}
-
-(// port 만들기
-p.close; // 새로 만들기 전에 기존에 열었던 시리얼 포트를 닫습니다.
-p = SerialPort(
-    "/dev/tty.usbserial-00000000", // Serial device 의 이름을 복사해서 붙여 줍니다.
-    baudrate: 115200,
-    crtscts: true);
-)
-
-p;
-
-// Serial port 를 열었으면 반드시 닫아야 합니다!!
-p.close;
-
-
-/*********************** Serial write *************************/
-(
-r.stop;
-r = Routine({
-    inf.do{|i|
-		// 증가했다 감소했다의 반복
-		// p.put(i.fold(0, 100).linexp(0, 100, 1, 255).asInteger.postln); // Fold (도움말 보기)
-
-		[~ampL, ~ampR, ~freqL, ~freqR, ~hasFreqL, ~hasFreqR].postln;
-
-		// 값을 아두이노에서 필요한 범위로 바꾸어 보내주어야 합니다.
-		p.put(~ampL.expexp(0.001, 0.2, 1, 255).asInteger.postln);
-        0.02.wait;
-    };
-}).play;
-)
-
-r.stop;p.close;
-
-
-
-/*********************** Serial read *************************/
-(
-r= Routine({
-    var byte, str, res;
-    inf.do{|i|
-		i.postln;
-        /*if(p.read==10, {
-            str = "";
-            while({byte = p.read; byte !=13 }, {
-                str= str++byte.asAscii;
-            });
-            res= str.asInteger;
-            ("read value:"+res).postln;
-        });
-		*/
-		0.0001.wait;
-
-
-    };
-}).play;
-)
-
-r.stop;
-p.close;
-
