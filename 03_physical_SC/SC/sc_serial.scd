@@ -1,6 +1,7 @@
 ------------------------ 슈콜에서의 Serial 통신 ------------------------
 
 SerialPort.listDevices;
+SerialPort.devices;
 
 
 <sc에서의 변수>
@@ -16,37 +17,55 @@ SerialPort.listDevices;
 반대로 아두이노에서 시리얼 모니터 창을 열어 놓으면, 슈콜에서 시리얼 포트를 열 수 없습니다.
 따라서 슈콜과 아두이노를 시리얼로 연결하는 경우 아두이노의 시리얼 모니터 창은 쓰지 않는 것으로 생각하는 것이 마음 편합니다.
 
+// port 열기
 
-(// port 열기
-p = SerialPort(
-    "/dev/tty.usbserial-00000000", // Serial device 의 이름을 복사해서 붙여 줍니다.
+(
+SerialPort(
+	"/dev/tty.usbserial-00000000", // Serial device 의 이름을 복사해서 붙여 줍니다.
     baudrate: 115200,
     crtscts: true);
 )
 
+
+// 함수로 만들기
+(
+f = { |portname|
+		SerialPort.new(portname, 115200, crtscts: true);
+}
+)
+
+// 함수 실행
+p = f.("/dev/tty.usbserial-00000000");
+
 p; // 확인
 
-// Serial port 를 열었으면 닫아야 합니다. 적어도 슈콜을 종료하기 전에는.
+// Serial port 를 열었으면 닫아야 합니다.
 p.close;
-
 
 
 // 1 : 슈콜 Buffer -> 시리얼 통신 -> 아두이노 -> LED 점멸 제어
 // Arduino code : serialReadAnalogWrite
 /*********************** Serial write (Send) *************************/
 (
+~ampL = 1;
+~buf_sound_1 = Synth(\bufPlaySend, [\buf, ~buf, \rate, 2, \trigFreq, 0.02, \sPos, s.sampleRate*(140.rand)]);
 
 r = Routine({
     inf.do{|i|
-		// 1) 증가했다 감소했다의 반복
-		p.put(i.fold(0, 100).linexp(0, 100, 1, 255).asInteger.postln); // Fold (도움말 보기)
 
+		var thr, ampL_round;
+		thr = 0.012;
 
-		// 2) Buffer에서 얻어 낸 값 보내기
-		// [~ampL, ~ampR, ~freqL, ~freqR, ~hasFreqL, ~hasFreqR].postln;
+		ampL_round = ((~ampL*1000).round())/1000;
+		if (ampL_round > thr, {ampL_round.postln;});
 
-		// 값을 아두이노에서 필요한 범위로 바꾸어 보내주어야 합니다.
-		// p.put(~ampL.expexp(0.001, 0.2, 1, 255).asInteger.postln);
+		if ( (ampL_round > thr) && (~hasFreqL == 1), {
+			p.put(1);
+		},
+		{
+			p.put(0)
+		});
+
         0.02.wait;
     };
 }).play;
@@ -57,6 +76,8 @@ r.stop;
 
 // Serial port close
 p.close;
+
+~buf_sound_1.set(\rate, 0.5, \sPos, s.sampleRate*(140.rand), \trigFreq, 5, \sendFreq, 20);
 
 
 
@@ -104,35 +125,43 @@ string -> symbol
 "a String".asSymbol.class;
 
 
-(// serial read routine
+// serial read routine
+(
+p = f.("/dev/tty.usbserial-00000000");
+
+
 ~buf_sound_1 = Synth(\bufPlaySend, [\buf, ~buf, \rate, 2, \trigFreq, 0.02, \sPos, s.sampleRate*(140.rand)]);
 
-r= Routine({
+r = Routine(
+	{
     var byte, str, res, rate;
 
     inf.do{
+
 		byte = p.read;
-		// byte.postln;
+			// byte.postln;
+
 
 		if (byte == 10, { // 10.asAscii => NL (New Line)
 
 			str = "";
 
 			while({ byte = p.read; byte !=13 }, { // SC의 While loop
-				str= str++byte.asAscii; // string에서 +와 ++의 차이?
+					str= str++byte.asAscii; // string에서 +와 ++의 차이?
 			});
 
 			res = str.asInteger; // string to integer. 타입 변환. "Type casting"
 
-			// rate = res.linlin(10, 500, 4, -4);
-			// ~buf_sound_1.set(\rate, rate);
-			("read value:"+res).postln;
-			// ("rate:"+rate).postln;
+				rate = res.linlin(150, 10, 0.8, 3);
+				~buf_sound_1.set(\rate, rate);
+				("read value:"+res).postln;
+				// ("rate:"+rate).postln;
 
-		});
+			});
 
 
-		0.0001.wait;
+
+		0.04.wait; // !!아두이노가 보내는 간격보다는 촘촘해야 한다.!!
 
 
     };
@@ -141,9 +170,9 @@ r= Routine({
 
 
 // Tip : cmd + . 을 할 때 함께 처리하고 싶은 일을 적어둔다.
-// CmdPeriod.doOnce{
-// r.stop;
-// }
+CmdPeriod.doOnce {
+ r.stop;
+}
 
 
 )
