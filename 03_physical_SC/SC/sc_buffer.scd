@@ -1,4 +1,3 @@
-
 ------------------------ Buffer? 샘플러? ------------------------
 Buffer
 
@@ -12,46 +11,40 @@ Buffer
 정해진 파일 읽어오기
 ~buf = Buffer.read(s, "/Users/giy/Desktop/201804_monthly.wav");
 
-b = Buffer.read(s, "/Users/giy/Desktop/201804_monthly.wav");
 
-
-// action 아규먼트의 사용 예제 - 버퍼를 불러오자 마자 뭔가를 하고 싶을 때
+// action 아규먼트의 사용 예제 - 버퍼를 불러오자마자 뭔가를 하고 싶을 때
 (
 ~buf = Buffer.loadDialog(s, action: { arg buffer;
     x = { PlayBuf.ar(buffer.numChannels, buffer, BufRateScale.kr(buffer)) }.play;
 });
 )
 
-
-
 // play
 ~buf.play;
 
 
-
-
-
 // 좀 더 복잡한 조작을 위해 PlayBuf를 품은 SynthDef로 만들어 봅시다.
-// SynthDef 에 대한 약간의 복습이 필요?
+
+// Trig 신호?
+{Impulse.kr(1)}.plot(1);
+{Impulse.kr(10)}.plot(1);
+
 
 (
-SynthDef(\bufPlay, {| out = 0, buf = nil, rate = 1, loop = 1, sPos = 0, trigFreq = 2 |
+SynthDef(\bufPlay, {
+	| out = 0, buf = nil, rate = 1, loop = 1, sPos = 0, trigFreq = 2 |
 	var trig = Impulse.kr(trigFreq);
-    Out.ar(out,
-		Amplitude.ar(
-        PlayBuf.ar(2, buf, BufRateScale.kr(buf) * rate, trig, sPos, loop, doneAction: 2)
-		)
-    )
+    Out.ar(out, PlayBuf.ar(2, buf, BufRateScale.kr(buf) * rate, trig, sPos, loop, doneAction: 2));
 }).add;
 );
 
 
 // SynthDef -> Synth (설계도 -> 실제 소리)
-~buf_sound_0 = Synth(\bufPlay, [\buf, ~buf, \rate, 2, \trigFreq, 10]);
+~buf_sound_0 = Synth(\bufPlay, ["buf", ~buf, "rate", 1, "trigFreq", 0.00001, "loop", 0]);
 
 
 // 여러 아규먼트 값을 바꿔보면서 기능을 파악해 봅시다.
-~buf_sound_0.set(\rate, 1.7, \sPos, s.sampleRate*(140.rand), \trigFreq, 0.0002);
+~buf_sound_0.set(\rate, 1.7, \sPos, s.sampleRate*(140.rand), \trigFreq, 1);
 
 
 
@@ -77,43 +70,49 @@ amplitude tracking을 위해 마련된 Amplitude 역시 UGEN이고 이는 서버
 SynthDef(\bufPlaySend, {
 	| out = 0, buf = 0, rate = 1, loop = 1, sPos = 0, trigFreq = 2, sendFreq = 60 |
 	var trig = Impulse.kr(trigFreq);
+
 	var bufPlay = PlayBuf.ar(2, buf, BufRateScale.kr(buf) * rate, trig, sPos, loop, doneAction: 2);
+
 	var amp_ = Amplitude.kr(bufPlay);
 	var freq_ = Pitch.kr(bufPlay);
+
 	var sendTrig = Impulse.kr(sendFreq); // 신호를 보내는 속도(해상도)를 결정할 수 있다
-	SendReply.kr(sendTrig, '/ampOfBuf', [amp_]);
+
+	SendReply.kr(sendTrig, '/ampOfBuf', amp_);
 	SendReply.kr(sendTrig, '/freqOfBufL', freq_[0]);
 	SendReply.kr(sendTrig, '/freqOfBufR', freq_[1]);
+
     Out.ar(out, bufPlay);
 }).add;
 );
+
+
+OSCdef
+
+
 
 
 ( // Serial로 보내기 전에 중간 OSC에서 먼저 받아서 전달
 
 // ~destNetAddr = NetAddr("127.0.0.1", 5000); // Processing 등 바로 osc를 receive 할 수 있는 대상이 있다면,
 
-~osc_mediate_amp.free; // 메모리에서 지움
-~osc_mediate_amp = OSCFunc(
+OSCdef(\o1,
 	{
-		| msg, time, addr, recvPort | // argument
+		| m, t, a, r | // argument : 이름을 바꿔도 순서대로 들어오는 값에는 변함이 없다.
 
-		var data = msg[3..];
-
-		// msg.postln;
+		m.postln;
 		// ("amp left: " + msg[3] + " | amp right: " + msg[4]).postln;
 
-		~ampL = msg[3];
-		~ampR = msg[4];
+		~ampL = m[3];
+		~ampR = m[4];
 
 		// 바로 OSC로 보내기
-		// ~destNetAddr.sendMsg("data", data);
+	// ~destNetAddr.sendMsg("data", data);
 
 }, '/ampOfBuf'); // SynthDef에서 정의한 message name과 일치 해야 합니다
 
 
-~osc_mediate_freq_left.free; // 메모리에서 지움
-~osc_mediate_freq_left = OSCFunc(
+OSCdef(\o2,
 	{
 		| msg, time, addr, recvPort | // argument
 
@@ -125,9 +124,7 @@ SynthDef(\bufPlaySend, {
 
 }, '/freqOfBufL'); // SynthDef에서 정의한 message name과 일치 해야 합니다
 
-
-~osc_mediate_freq_right.free; // 메모리에서 지움
-~osc_mediate_freq_right = OSCFunc(
+OSCdef(\o3,
 	{
 		| msg, time, addr, recvPort | // argument
 
@@ -140,12 +137,15 @@ SynthDef(\bufPlaySend, {
 }, '/freqOfBufR'); // SynthDef에서 정의한 message name과 일치 해야 합니다
 
 
-)
-
-
 // SynthDef -> Synth (설계도 -> 실제 소리)
 ~buf_sound_1 = Synth(\bufPlaySend, [\buf, ~buf, \rate, 2, \trigFreq, 0.02, \sPos, s.sampleRate*(140.rand)]);
 
+
+)
+
+
+
 // 여러 아규먼트 값을 바꿔보면서 기능을 파악해 봅시다.
-~buf_sound_1.set(\rate, 0.5, \sPos, s.sampleRate*(140.rand), \trigFreq, 0.02, \sendFreq, 30, \sendFreq, 20);
+~buf_sound_1.set(\sendFreq, 2);
+~buf_sound_1.set(\rate, 0.5, \sPos, s.sampleRate*(140.rand), \trigFreq, 0.02, \sendFreq, 20);
 ~buf_sound_1.free;
