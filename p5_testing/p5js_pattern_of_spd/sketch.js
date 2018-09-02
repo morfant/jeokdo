@@ -1,17 +1,18 @@
 var pos_x = 0;
 var pos_y = 0;
-var spd = 1;
+var spd = 10;
 
 function setup() {
   // put setup code here
     createCanvas(innerWidth, innerHeight);
-    background(100, 200, 100);
+    background(100, 20, 100);
 }
 
 function draw() {
     // put drawing code here
     
-    background(200, 155 + random(100), random(50) + 205, 4);
+    // background(200, 155 + random(100), random(50) + 205, 4);
+    background(100);
     
 
     for (var i = 110; i > 0; i=i-2) {
