@@ -1,5 +1,6 @@
 var n = 0;
 var c = 4;
+var doDraw = true;
 
 function setup() {
     createCanvas(innerWidth, innerHeight);
@@ -10,6 +11,8 @@ function setup() {
 
 function draw() {
     
+    if (doDraw) {
+        
 //    frameRate(2);
     
 //    var a = n * 137.3;
@@ -29,5 +32,15 @@ function draw() {
     
     
     n++;
-    
+
+        
+    }    
 }
+
+
+function keyTyped() {
+    if (key === 'p'){
+        doDraw = !doDraw;
+    }
+}
+
