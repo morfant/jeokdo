@@ -3,13 +3,13 @@
 
 정해진 파일 읽어오기
 (
-b = Buffer.read(s, "/Users/giy/Desktop/gwangsung_joong/sounds/piano_1.wav");
-~buf_0 = Buffer.read(s, "/Users/giy/Desktop/gwangsung_joong/sounds/piano_1.wav");
-~buf_1 = Buffer.read(s, "/Users/giy/Desktop/gwangsung_joong/sounds/piano_2.wav");
-~buf_2 = Buffer.read(s, "/Users/giy/Desktop/gwangsung_joong/sounds/sine.wav");
-~buf_3 = Buffer.read(s, "/Users/giy/Desktop/gwangsung_joong/sounds/stream.wav");
-~buf_4 = Buffer.read(s, "/Users/giy/Desktop/gwangsung_joong/sounds/taaa.wav");
-~buf_5 = Buffer.read(s, "/Users/giy/Desktop/gwangsung_joong/sounds/tung.wav");
+b = Buffer.read(s, "/Users/giy/jeokdo/gwangsung_joong/sounds/piano_1.wav");
+~buf_0 = Buffer.read(s, "/Users/giy/jeokdo/gwangsung_joong/sounds/piano_1.wav");
+~buf_1 = Buffer.read(s, "/Users/giy/jeokdo/gwangsung_joong/sounds/piano_2.wav");
+~buf_2 = Buffer.read(s, "/Users/giy/jeokdo/gwangsung_joong/sounds/sine.wav");
+~buf_3 = Buffer.read(s, "/Users/giy/jeokdo/gwangsung_joong/sounds/stream.wav");
+~buf_4 = Buffer.read(s, "/Users/giy/jeokdo/gwangsung_joong/sounds/taaa.wav");
+~buf_5 = Buffer.read(s, "/Users/giy/jeokdo/gwangsung_joong/sounds/tung.wav");
 );
 
 
