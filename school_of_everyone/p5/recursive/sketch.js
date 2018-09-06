@@ -7,8 +7,9 @@ function setup() {
 
 function draw() {
     
-    background(0);
+    background(200);
     stroke(255);
+    strokeWeight(10.0);
     noFill();
     drawCircle(width/2, height/2, 600);
     noLoop();
@@ -38,6 +39,6 @@ function drawCircle(x, y, d) {
 }
 
 function mousePressed() {
-    background(0);
+    background(255);
     drawCircle(innerWidth/2, innerHeight/2, 600);
 }
