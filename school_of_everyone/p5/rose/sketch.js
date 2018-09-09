@@ -7,7 +7,8 @@ var frameCountDiv = 10; // The lager the slower fluctuating Speed
 
 function setup() {
     
-    createCanvas(500, 500);    
+//    createCanvas(500, 500);    
+    createCanvas(innerWidth, innerHeight);    
     sliderN = createSlider(1, 10, 4, 1);
     sliderD = createSlider(1, 10, 3, 1);
     sliderC = createSlider(-200, 200, 0, 1);
@@ -48,7 +49,6 @@ function draw() {
     
     beginShape();
     colorMode(HSB);
-    stroke(165, 20, 100);
     strokeWeight(13 * noise(offl));
     offl += 0.4;
     
@@ -57,6 +57,7 @@ function draw() {
     for (var a = 0; a < TWO_PI * d; a += 0.01) {
         fill(map(n, 1, 10, 0, 255), 70, 60 + c);
         stroke(165, map(d, 1, 10, 0, 100), 100);
+        noStroke();
         var r = 200 * cos(k*a) + (c + coff);
         var x = r * cos(a);
         var y = r * sin(a);
