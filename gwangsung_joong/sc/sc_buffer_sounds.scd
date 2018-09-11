@@ -39,8 +39,8 @@ SynthDef(\bufPlay, {
 ~sound = Synth(\bufPlay, [buf: ~buf_0, rel: ~buf_0.numFrames/s.sampleRate/1.2, rate: 1.2, amp: 1.4 ]);
 ~sound = Synth(\bufPlay, [buf: ~buf_1, rel: ~buf_1.numFrames/s.sampleRate/0.6, rate: 0.6, amp: 0.8]);
 
-~sound = Synth(\bufPlay, [buf: ~buf_2, rel: ~buf_2.numFrames/s.sampleRate/0.5, rate: 0.5, amp: 0.9]);
+~sound = Synth(\bufPlay, [buf: ~buf_2, rel: ~buf_2.numFrames/s.sampleRate/0.5, rate: 0.5, amp: 0.3]);
 ~sound = Synth(\bufPlay, [buf: ~buf_3, rel: ~buf_3.numFrames/s.sampleRate/1, rate: 1, amp: 0.8]);
 ~sound = Synth(\bufPlay, [buf: ~buf_4, rel: ~buf_4.numFrames/s.sampleRate/1, rate: 1, amp: 0.9]);
-~sound = Synth(\bufPlay, [buf: ~buf_5, rel: ~buf_5.numFrames/s.sampleRate/1, rate: 9, amp: 0.5]);
+~sound = Synth(\bufPlay, [buf: ~buf_5, rel: ~buf_5.numFrames/s.sampleRate/1, rate: 1, amp: 0.5]);
 
