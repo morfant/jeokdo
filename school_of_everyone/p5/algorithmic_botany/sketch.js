@@ -7,10 +7,11 @@ function setup() {
     angleMode(DEGREES);
     colorMode(HSB);
     background(0);
+    frameRate(30);
 }
 
 function draw() {
-    
+
     if (doDraw) {
         
 //    frameRate(2);
