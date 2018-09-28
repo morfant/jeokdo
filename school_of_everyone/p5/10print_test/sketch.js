@@ -8,17 +8,13 @@ var spacing = 2;
 var dx, dy;
 
 function setup() {
-    // createCanvas(innerWidth, innerHeight);
-    createCanvas(800, 500);
+    createCanvas(innerWidth, innerHeight);
     background(0);
     strokeCap(SQUARE);
     rectMode(CENTER);
 
     px = width/2;
     py = height/2;
-
-    px = 100;
-    py = 500;
 
     if (px <= width/2) {
         dx = width - px;
@@ -31,9 +27,6 @@ function setup() {
     } else {
         dy = py;
     }
-
-    console.log("dx: " + dx);
-    console.log("dy: " + dy);
 
 }
 
@@ -48,28 +41,12 @@ function draw() {
 
         stroke(255, 255 * (1 - d/maxD));
         strokeWeight(swMul * (1 - d/maxD));
-
-        if (Math.abs(px - x) < w && Math.abs(py - y) < h) {
-            stroke(random(255), random(255), random(255));
-            // strokeWeight(swMul*10);
-            fill(255, 100, 200);
-            ellipse(x, y, swMul*3, swMul * 3);
-        }
-
         line(x, y, x + w, y + h);
 
     } else {
 
         stroke(255, 255 * (1 - d/maxD));
         strokeWeight(swMul * (1 - d/maxD));
-
-        if (Math.abs(px - x) < w && Math.abs(py - y) < h) {
-
-            stroke(random(255), random(255), random(255));
-            fill(255, 100, 200);
-            ellipse(x, y, swMul*3, swMul * 3);
-        }
-
         line(x, y + h, x + w, y);
     }
 
