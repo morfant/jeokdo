@@ -7,6 +7,8 @@ var paddingY = 60;
 function setup() {
     createCanvas(innerWidth, innerHeight);
     background(255);
+
+
 }
 
 function draw() {
