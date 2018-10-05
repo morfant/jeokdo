@@ -1,7 +1,3 @@
-soundtour2018
-
-
-
 var xoff = 0;
 
 function setup() {
@@ -16,7 +12,7 @@ function draw() {
     
     // noise
 	background(n * 255, 0, n * 255);
-    xoff+=0.2;
+    xoff+=0.1; // 증가시키는 값이 커질 수록 noise()를 통한 변화의 폭도 커진다.
     
     // random
     fill(r * 255, 0, r * 255);

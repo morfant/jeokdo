@@ -13,7 +13,7 @@ function setup() {
     strokeCap(SQUARE);
     rectMode(CENTER);
 
-    px = width/2;
+    px = width/2 - 200;
     py = height/2;
 
     if (px <= width/2) {
