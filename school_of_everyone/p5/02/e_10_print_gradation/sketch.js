@@ -2,7 +2,7 @@ var x = 0;
 var y = 0;
 var w = 30;
 var h = 30;
-var swMul = 4;
+var swMul = 6;
 var px, py; 
 var spacing = 2;
 var dx, dy;
@@ -31,8 +31,6 @@ function setup() {
 }
 
 function draw() {
-
-
 
     var d = Math.pow((px - x), 2) + Math.pow((py - y), 2);
     var maxD = Math.pow(dx, 2) + Math.pow(dy, 2);

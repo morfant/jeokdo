@@ -13,7 +13,7 @@ function setup() {
 
 function draw() {
     
-    stroke(sin(y)/2*255, 100, 140, 255);
+    stroke(255, 100, 140, 255);
     strokeWeight(5);
     
     push();
@@ -23,9 +23,13 @@ function draw() {
     if (y <= (innerHeight - paddingY*2 - spacing) ) {
         if (random(1) < 0.5) {
             // apply var at spacing
+            strokeWeight(1);
+            stroke(255, 100, 140, 255);
             line(x, y, x + spacing, y + spacing);
             
         } else {
+            strokeWeight(5);
+            stroke(55, 100, 140, 255);
             line(x, y + spacing, x + spacing, y);
         }
     }

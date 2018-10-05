@@ -6,6 +6,7 @@ function setup() {
     // frame이 1초당 몇 번 만들어지게 할 것인지의 속도를 결정
     frameRate(10);   
     
+    
 
     
 }

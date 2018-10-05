@@ -3,18 +3,20 @@ var x_step, y_step;
 
 function setup() {
     
-	createCanvas(400, 400);
+	createCanvas(800, 800);
 	
-	x_step = 4;
-    y_step = 4;
+	x_step = 8;
+    y_step = 8;
+    
 }
+
 
 function draw() {
 
 	background(0);
 	noStroke();
 	
-	moving += 0.4;
+	moving += 0.2;
 	
 	var xoff = moving;
 	for (var x = 0; x < width + x_step; x+=x_step){
