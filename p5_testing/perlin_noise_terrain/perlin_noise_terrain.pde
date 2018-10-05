@@ -46,8 +46,8 @@ void draw() {
   noFill();
   //fill(255, 90);
 
-  translate(width/2, height/2+150);
-  rotateX(PI*0.24);
+  translate(width/2, height/2);
+  rotateX(PI*0.4);
   translate(-w/2, -h/2);
 
   for (int y = 0; y < rows-1; y++) {
