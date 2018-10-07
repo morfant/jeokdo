@@ -1,6 +1,7 @@
 var angle = 0;
 var slider;
-var mul = 0.7;
+var mul = 0.65;
+var i = 0;
 
 function setup() {
     
@@ -8,12 +9,15 @@ function setup() {
 	stroke(255);
 
 	slider = createSlider(0, TWO_PI, PI/4, 0.01);
-    
+
+	textSize(10);
+
 }
 
 
 function draw() {
 
+	// noLoop();
 	angle = slider.value();
 
 	background(50);
@@ -21,10 +25,14 @@ function draw() {
 	drawBranch(150);
 
 
+
 }
 
 
 function drawBranch(len) {
+
+	// i++;
+	// text(i, 0, 0);
 
 	line(0, 0, 0, -len);
 	translate(0, -len);
