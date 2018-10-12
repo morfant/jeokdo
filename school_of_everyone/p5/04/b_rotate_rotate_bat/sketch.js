@@ -2,18 +2,18 @@
 function setup() {
     
 	createCanvas(800, 800);
+	angleMode(DEGREES);
+
 	background(0);
+	noFill();
+	stroke(255, 50);
+	strokeWeight(0.5);
     
 }
 
 
 function draw() {
 
-	angleMode(DEGREES);
-
-	noFill();
-	stroke(255, 50);
-	strokeWeight(0.5);
 
 	translate(width/2, height/2);
 	rotate(frameCount);

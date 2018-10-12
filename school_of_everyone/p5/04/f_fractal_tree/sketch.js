@@ -22,9 +22,8 @@ function draw() {
 
 	background(50);
 	translate(width/2, height);
+
 	drawBranch(150);
-
-
 
 }
 
