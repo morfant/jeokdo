@@ -1,52 +1,56 @@
-var mul = 0.8;
-var drawCount = 0;
 var angle = 0;
+var mul = 0.8;
+var i = 0;
+var redraw = true;
 
-function setup() {    
+function setup() {
+    
 	createCanvas(500, 500);
 	stroke(255);
-	background(0);
+
 	angle = PI/4;
+
+	noLoop();
 }
 
 function draw() {
-	console.log("draw()");
 
-	noLoop();
-	// background(50); 
-    translate(width/2, height);
-    
-	drawBranch(150);
+	background(50);
+	translate(width/2, height);
+
+	drawBranch(100);
 }
 
+
 function drawBranch(len) {
-	// console.log("drawBranch()");
 
-		strokeWeight(len/14);
-		stroke(255 * len/150, 20, 105 + len);
+	strokeWeight(len/15);
+	line(0, 0, 0, -len);
+	translate(0, -len);
 
-		// console.log("drwa line");
-		line(0, 0, 0, -len);
-		translate(0, -len);
-    
-    
 	if (len > 4) {
-	setTimeout(function() {
-		// var r = random(1);
-		// if (r > 0.2) {
-			// push(); // save
-				rotate(angle );
+		// right
+		var r = random(1);
+		if (r > 0.2) {
+			push(); // save
+				rotate(angle * r);
 				drawBranch(len * mul);
-			// pop(); // restore
-		// }
-		// var r2 = random(1);
-		// if (r2 > 0.1) {
-			// push(); // save
-			// 	rotate(-angle );
-			// 	drawBranch(len * mul);
-			// pop();
-		// }
+			pop(); // restore
+		}
 
-	}, 1000);
+		// left
+		var r2 = random(1);
+		if (r2 > 0.1) {
+			push(); // save
+				rotate(-angle * r2);
+				drawBranch(len * mul * r2);
+			pop(); // restore
+		}
+
 	}
+
+
+
+
+
 }
