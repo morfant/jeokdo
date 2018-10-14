@@ -1,12 +1,11 @@
 var n = 0;
 var c = 4;
-var doDraw = true;
 
 var sentance; 
 var cnt = 0;
 
 function setup() {
-    createCanvas(innerWidth, innerHeight);
+    createCanvas(600, 600);
     angleMode(DEGREES);
     colorMode(HSB);
     background(0);
