@@ -1,10 +1,10 @@
 var ball;
 
 class Ball {
-    constructor() {
-        this.x = 100;
-        this.y = 100;
-        this.velocity = 2;
+    constructor(_x, _y, _v) {
+        this.x = _x;
+        this.y = _y;
+        this.velocity = _v;
     }
     
     move() {
@@ -20,7 +20,7 @@ class Ball {
 
 function setup() {
     createCanvas(600, 600);
-    ball = new Ball();
+    ball = new Ball(100, 100, 2);
 }
 
 function draw() {
