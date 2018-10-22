@@ -1,45 +1,31 @@
-var n = 0;
-var c = 4;
-var doDraw = true;
+var n = 0; // 1씩 증가한다
+var c = 2; // r에 곱해지는 고정된 값
+var range = 5;
+var LIMIT = 4000;
 
 function setup() {
     createCanvas(innerWidth, innerHeight);
     angleMode(DEGREES);
-    colorMode(HSB);
     background(0);
-    frameRate(30);
+    colorMode(HSB);
+    frameRate();
 }
 
 function draw() {
 
-    if (doDraw) {
-        
-//    frameRate(2);
+    if (n < LIMIT) { // 그려지는 갯수 제한 
 
-    //    var a = n * 137.3;
-        // var a = n * 137.5;
-       var a = n * 137.6;
-        var r = c * sqrt(n);
+        var a = n * -137.5; // theta
+        var r = c * sqrt(n*2); // 반지름 radius
 
-        var x = 2 * r * cos(a) + width/2;
-        var y = 2 * r * sin(a) + height/2;
+        translate(width/2, height/2);
+        var x = 2 * r * cos(a);
+        var y = 2 * r * sin(a);
 
-        fill(155, 100 * cos(a/3) * 255, 200);
         noStroke();
-            
+        stroke(n/LIMIT* 360, 100, 100);
+        line(x, y, random(x-range, x+range), random(y-range, y+range));
 
-    //    if (n % 3 == 0) {
-           ellipse(x, y, random(4, 8), random(4, 10));    
-    //    }
-
-        n++;
+        n++; // n = n + 1
     }
 }
-
-
-function keyTyped() {
-    if (key === 'p'){
-        doDraw = !doDraw;
-    }
-}
-
