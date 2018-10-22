@@ -59,9 +59,7 @@ function draw() {
         noFill();
         stroke(165, map(d, 1, 10, 0, 100), 100);
         // noStroke();
-        // var r = 200 * cos(k*a) + (c + coff);
-        var r = 3 + 2 * a * (2 + sin(frameCount/10));
-
+        var r = 200 * cos(k*a) + (c + coff);
         var x = r * cos(a);
         var y = r * sin(a);
         vertex(x, y);

@@ -1,45 +1,29 @@
-var n = 0;
-var c = 4;
-var doDraw = true;
+var r = 200;
+var theta = 45;
 
 function setup() {
-    createCanvas(innerWidth, innerHeight);
+    createCanvas(600, 600);
     angleMode(DEGREES);
-    colorMode(HSB);
-    background(0);
-    frameRate(30);
+    noFill();
 }
 
 function draw() {
+    background(0);
 
-    if (doDraw) {
-        
-//    frameRate(2);
+    stroke(255);
+    line(0, height/2, width, height/2);
+    line(width/2, 0, width/2, height);
+    
+    translate(width/2, height/2);
 
-    //    var a = n * 137.3;
-        // var a = n * 137.5;
-       var a = n * 137.6;
-        var r = c * sqrt(n);
+    theta = frameCount % 360;
 
-        var x = 2 * r * cos(a) + width/2;
-        var y = 2 * r * sin(a) + height/2;
+    var x = r * cos(theta);
+    var y = r * sin(theta);
+    
+    ellipse(x, y, 10, 10);
+    text(theta, x + 20, y + 20);
 
-        fill(155, 100 * cos(a/3) * 255, 200);
-        noStroke();
-            
-
-    //    if (n % 3 == 0) {
-           ellipse(x, y, random(4, 8), random(4, 10));    
-    //    }
-
-        n++;
-    }
+    stroke(255, 0, 0);
+    line(0, 0, x, y);
 }
-
-
-function keyTyped() {
-    if (key === 'p'){
-        doDraw = !doDraw;
-    }
-}
-
