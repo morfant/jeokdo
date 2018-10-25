@@ -7,8 +7,8 @@ class Ball {
         this.vx = _vx;
         this.vy = _vy;
         this.age = 0;
-        this.rx = 10;
-        this.ry = 10;
+        this.rx = 50;
+        this.ry = 50;
         this.randx = random(1, 3);
         this.randy = random(1, 3);
         this.levelx = 0;
@@ -18,13 +18,11 @@ class Ball {
     }
     
     move() {
-        this.x = this.x + this.vx;
-        this.y = this.y + this.vy;
+        // this.x = this.x + this.vx;
+        // this.y = this.y + this.vy;
 
-
-        // this.x = this.x + this.vx*sin(frameCount)*this.randx*this.powerx;
-        // this.y = this.y + this.vy*cos(frameCount)*this.randy*this.powery;
-;
+        this.x = this.x + this.vx*sin(frameCount*2);
+        this.y = this.y + this.vy*cos(frameCount*2);
 
         // top
         if (this.y - this.ry/2 < 0) {
@@ -56,9 +54,11 @@ class Ball {
     draw() {
         push();
         if (this.powerx > this.powery) {
-            fill(255, 100, 100, 100 + 155* Math.abs(this.vx));
+            fill(255, 100, 100, 10 + this.powerx);
+            // fill(255, 100, 100, 100 + 155* Math.abs(this.vx));
         } else {
-            fill(100, 255, 255, 100 + 155* Math.abs(this.vy));
+            fill(100, 255, 255, 10 + this.powery);
+            // fill(100, 255, 255, 100 + 155* Math.abs(this.vy));
         }
         noStroke();
         ellipse(this.x, this.y, this.rx, this.ry);
@@ -124,7 +124,7 @@ function setup() {
 }
 
 function draw() {
-    background(0, 255);
+    background(0, 1);
 
     for (let i = 0; i < balls.length; i++) {
         balls[i].move();
