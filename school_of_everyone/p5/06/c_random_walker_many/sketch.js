@@ -27,7 +27,7 @@ function setup() {
     background(0);
     // constructor()에서 정의한 방법대로 사용한다.
     // forloop 을 이용한 반복
-    for (var i = 0; i < 10; i++) {
+    for (var i = 0; i < 1000; i++) {
         walkers[i] = new Walker(random(10), random(0.5, 3), random(5, 8));
     }
 

@@ -1,7 +1,7 @@
 var rects = [];
 
 function setup() {
-    createCanvas(600, 600);
+    createCanvas(innerWidth, innerHeight);
     angleMode(DEGREES);
 
     for (let i = 0; i < 20; i++) {
