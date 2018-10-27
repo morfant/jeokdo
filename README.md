@@ -1,4 +1,4 @@
-# [jeokdo] Art coding workshop series
+# Art coding workshop series
 
 #01 - <슈콜(sc) 딱 두 가지만 배워서 만드는 가벼운 전자음악>
 
