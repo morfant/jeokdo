@@ -1,4 +1,4 @@
-# [jeokdo] Art coding workshop series
+# Art coding workshop series
 
 #01 - <슈콜(sc) 딱 두 가지만 배워서 만드는 가벼운 전자음악>
 
@@ -6,7 +6,7 @@
 
 #03 - <전자음악의 친구, 피지컬 컴퓨팅>
 
-
+#04 - <p5js, 웹에 그림을 그리며 배우는 코딩의 기초>
 
 <br>
 
