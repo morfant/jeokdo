@@ -28,6 +28,7 @@ function draw() {
        bassAmp += spectrum[i]; 
     }
     bassAmp = bassAmp/5; // 평균 값을 구합니다.
+    // bassAmp = fft.getEnergy(20, 100);
     // console.log("bassAmp: " + bassAmp);
  
 
