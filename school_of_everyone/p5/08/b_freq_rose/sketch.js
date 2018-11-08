@@ -88,7 +88,8 @@ function draw() {
     
     beginShape();
     colorMode(HSB);
-    strokeWeight(3 + pow(bassAmp/12, 2)); // 효과를 극대화 하기 위해, 제곱에 비례하도록 합니다.
+    // strokeWeight(pow(bassAmp/12, 2)); // 효과를 극대화 하기 위해, 제곱에 비례하도록 합니다.
+    strokeWeight(bassAmp/60); // 효과를 극대화 하기 위해, 제곱에 비례하도록 합니다.
     
     for (var a = 0; a < TWO_PI * d; a += 0.01) {
         var r = 100 * cos(k*a) + (c + coff);
