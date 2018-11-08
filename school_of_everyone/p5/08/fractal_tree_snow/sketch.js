@@ -1,36 +1,86 @@
 var angle = 0;
 var mul = 0.8;
-var i = 0;
-var redraw = true;
-var isDrawnTree = false;
-
 var rValues = [];
 
-function setup() {
-    
-	createCanvas(500, 500);
-	stroke(255);
+let falls = [];
+let numFalls = 300;
 
+class Snow {
+
+    constructor(_x, _r, _wind, _g) {
+        this.x = _x;
+        this.y = 0;
+        this.r = random(10, _r);
+        this.wind = random(-_wind, _wind);
+        this.g = random(_g);
+    }
+
+    move() {
+    
+        this.x = this.x + this.wind;
+        this.y = this.y + this.g;
+
+        if (this.y > height) {
+            this.y = 0;
+        }
+        if (this.y < 0) {
+            this.y = height;
+        }
+        if (this.x > width) {
+            this.x = 0;
+        }
+        if (this.x < 0) {
+            this.x = width;
+        }
+    }
+
+    show() {
+        fill(255, this.g/9 * 200);
+        ellipse(this.x, this.y, this.r, this.r);
+    }
+}
+
+
+function setup() {
+	createCanvas(800, 800);
+	stroke(255);
 	angle = PI/4;
 
-	if (isDrawnTree == false) {
-		 isDrawnTree = true;
-	}
-	noLoop();
+
+	// setInterval(function() {
+		// makeRandomArray();
+	// }, 2000);
+
+	makeRandomArray();
+
+
+	// snow falls
+    for (let i = 0; i < numFalls; i++) {
+        falls[i] = new Snow(random(width), 20, 0.2, 9);
+    }
+
+
 
 }
 
 function draw() {
-
 	background(50);
+
+	push();
 	translate(width/2, height);
+	drawBranch(100);
+	pop();
 
-		 drawBranch(100);
-
-		 console.log(rValues);
-
+	
+	push();
+	noStroke();
+    for (let i = 0; i < falls.length; i++) {
+        falls[i].move();
+        falls[i].show();
+	}
+	pop();
+ 
 }
-
 
 
 function drawBranch(len) {
@@ -41,30 +91,25 @@ function drawBranch(len) {
 
 	if (len > 4) {
 		// right
-		var r = random(1);
-		rValues.push(r);
-		console.log("push()")
-		if (rValues[rValues.length] > 0.2) {
-			push(); // save
-				rotate(angle * rValues[rValues.length]);
-				drawBranch(len * mul);
-			pop(); // restore
-		}
+		push(); // save
+			rotate(angle * rValues[0]);
+			drawBranch(len * mul);
+		pop(); // restore
 
 		// left
-		var r2 = random(1);
-		rValues.push(r2);
-		if (rValues[rValues.length] > 0.1) {
-			push(); // save
-				rotate(-angle * rValues[rValues.length]);
-				drawBranch(len * mul * rValues[rValues.length]);
-			pop(); // restore
-		}
+		push(); // save
+			rotate(-angle * rValues[1]);
+			drawBranch(len * mul * rValues[1]);
+		pop(); // restore
 
 	}
 
-
-
-
-
 }
+
+
+function makeRandomArray() {
+	for (var i = 0; i < 2; i++) {
+		rValues.push(random(1));
+	}
+}
+
