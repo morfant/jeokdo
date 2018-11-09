@@ -4,6 +4,7 @@ var spacing = 15;
 var img;
 var p = [];
 
+// 이미지를 사용하는 스케치는 firefox를 이용해서 open 하셔야 합니다.
 function preload() {
   img = loadImage("assets/pumpkin.jpg");
 }

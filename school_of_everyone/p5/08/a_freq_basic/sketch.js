@@ -31,7 +31,7 @@ function draw(){
 
     beginShape();
     stroke(255, 0, 0);
-    strokeWeight(1);
+    strokeWeight(4);
     for (var i = 0; i < waveform.length; i++){
         var x = map(i, 0, waveform.length, 0, width);
         var y = map(waveform[i], -1, 1, 0, height);

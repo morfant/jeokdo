@@ -46,21 +46,13 @@ function setup() {
 	stroke(255);
 	angle = PI/4;
 
-
-	// setInterval(function() {
-		// makeRandomArray();
-	// }, 2000);
-
+	// setInterval(makeRandomArray, 2000);
 	makeRandomArray();
-
 
 	// snow falls
     for (let i = 0; i < numFalls; i++) {
-        falls[i] = new Snow(random(width), 20, 0.2, 9);
+        falls[i] = new Snow(random(width), 20, 1.2, 4); // position in x-axis, 최대 크기, 최대 바람세기, 중력의 크기
     }
-
-
-
 }
 
 function draw() {
@@ -89,7 +81,7 @@ function drawBranch(len) {
 	line(0, 0, 0, -len);
 	translate(0, -len);
 
-	if (len > 4) {
+	if (len > 6) {
 		// right
 		push(); // save
 			rotate(angle * rValues[0]);
@@ -103,13 +95,16 @@ function drawBranch(len) {
 		pop(); // restore
 
 	}
-
 }
 
 
 function makeRandomArray() {
+	rValues = [];
 	for (var i = 0; i < 2; i++) {
 		rValues.push(random(1));
 	}
 }
 
+function mouseClicked() {
+	makeRandomArray();
+}
