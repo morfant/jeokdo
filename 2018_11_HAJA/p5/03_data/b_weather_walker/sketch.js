@@ -1,5 +1,8 @@
 let weather;
+let geo = undefined;
 let walkers = [];
+let time = 0;
+let place = 'oslo';
 
 class Walker{
     constructor(_size, _rand_x, _rand_y, _col) {
@@ -31,12 +34,50 @@ class Walker{
 
 function preload() {
 
-    let url = 'https://api.apixu.com/v1/current.json?key=96a9971dd31a456e9ce103938180411&q=NYC';
+    let url = 'https://api.apixu.com/v1/current.json?key=96a9971dd31a456e9ce103938180411&q=' + place;
     weather = loadJSON(url);
+
+
+    // if (geo != undefined) {
+    //     console.log(geo["status"]);
+    //     console.log(geo.results);
+
+    //     let lat = geo.results[0].geometry.location.lat;
+    //     let lng = geo.results[0].geometry.location.lng; 
+
+    //     // let time_url = "http://api.geonames.org/timezoneJSON?lat=37.621&lng=126.92&username=xman";
+    //     let time_url = "http://api.geonames.org/timezoneJSON?lat=" + lat + "&lng=" + lng + "&username=xman";
+    //     time = loadJSON(time_url);
+    //     console.log(time);
+
+    // }
+
+
+}
+
+function getGeo(geo) {
+    // console.log(geo);
+    let lat = geo.results[0].geometry.location.lat;
+    let lng = geo.results[0].geometry.location.lng; 
+
+    let time_url = "http://api.geonames.org/timezoneJSON?lat=" + lat + "&lng=" + lng + "&username=xman";
+    loadJSON(time_url, getTime);
+    // console.log(time);
+
+}
+
+function getTime(time) {
+
+    console.log(time);
+    console.log(time.time);
 
 }
 
 function setup() {
+
+    let geo_url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + place + '&key=AIzaSyBP-VSHqfXwVyudRlQOnyhaIK4B3LrCnN4';
+    loadJSON(geo_url, getGeo);
+
     createCanvas(600, 600);
     background(0);
     
@@ -51,9 +92,12 @@ function draw() {
     let place = weather.location.name;
     let temp = weather.current.temp_c;
     let isDay = weather.current.is_day;
-    let windDegree = weather.current.wind_degree;
+    let windDegree = weather.current.wind_degree - 90 + 180;
     let windKPH = weather.current.wind_kph;
     let rain = weather.current.precip_mm;
+
+    // let currentTime = time.rawOffset;
+    // console.log(time);
     
     let windVector = p5.Vector.fromAngle(radians(windDegree), windKPH/2);
 
