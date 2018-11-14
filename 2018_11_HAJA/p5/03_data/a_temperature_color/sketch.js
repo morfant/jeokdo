@@ -1,6 +1,10 @@
 let urls = [];
+<<<<<<< HEAD
+let cnt = 0;
+=======
 let count = 0;
 let tempCircle;
+>>>>>>> d2e49387ccf49d1255c8fad3b246178384bca3fb
 
 function setup() {
     createCanvas(600, 600);
@@ -13,8 +17,13 @@ function setup() {
     urls[3] = 'https://api.apixu.com/v1/current.json?key=96a9971dd31a456e9ce103938180411&q=Helsinki';
 
     setInterval(function() {
+<<<<<<< HEAD
+        loadJSON(urls[cnt % urls.length], gotWeather);
+        cnt++;
+=======
         loadJSON(urls[count%4], gotWeather);
         count++;
+>>>>>>> d2e49387ccf49d1255c8fad3b246178384bca3fb
     }, 2000);
  
   
@@ -22,22 +31,28 @@ function setup() {
 
 function draw() {
     background(200, 50);
+<<<<<<< HEAD
+    tc.draw();
+=======
     tempCircle.draw();
+>>>>>>> d2e49387ccf49d1255c8fad3b246178384bca3fb
 }
 
 function gotWeather(weather) {
-
     // console.log(weather);
     // console.log(weather.location.name);
-
     let l = weather.location.name;
     let t = floor(weather.current.temp_c);
+<<<<<<< HEAD
+    tc.setLocation(l);
+    tc.setTemp(t);
+=======
 
     tempCircle.setLocation(l);
     tempCircle.setTemp(t);
+>>>>>>> d2e49387ccf49d1255c8fad3b246178384bca3fb
 
 }
-
 
 class TempCircle {
     constructor(_x, _y) {
@@ -60,7 +75,7 @@ class TempCircle {
     draw() {
         // background color
         colorMode(HSB);
-        let hue = map(this.temp, -10, 40, 240, 0);
+        let hue = map(this.temp, -5, 10, 240, 0);
         fill(hue, 100, 100, 0.1);
         rect(0, 0, width, height);
 
@@ -72,7 +87,11 @@ class TempCircle {
         textSize(this.textSize * 4);
         text(this.temp, width/2, height/2 + this.textSize * 2); // temp
         textSize(this.textSize);
+<<<<<<< HEAD
+        text(this.location, this.x - this.textSize - 10, this.y - this.textSize - 10);
+=======
         text(this.location, this.x - this.textSize - 10, this.y - this.textSize - 10); // location name
 
+>>>>>>> d2e49387ccf49d1255c8fad3b246178384bca3fb
     }
 }
