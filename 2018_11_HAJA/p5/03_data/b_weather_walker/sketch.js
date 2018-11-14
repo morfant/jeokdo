@@ -96,7 +96,8 @@ function setup() {
 
 function draw() {
     colorMode(RGB);
-    background(brightnessWithTime * 60, brightnessWithTime * 115, brightnessWithTime * 205, brightnessWithTime * 55);
+    // background(brightnessWithTime * 60, brightnessWithTime * 115, brightnessWithTime * 205, brightnessWithTime * 55);
+    background(brightnessWithTime * 60, brightnessWithTime * 115, brightnessWithTime * 205, 55);
 
     fill(255);
     textSize(40);
