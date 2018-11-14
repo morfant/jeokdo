@@ -1,5 +1,5 @@
 let urls = [];
-let r = 0;
+let cnt = 0;
 
 function setup() {
     createCanvas(600, 600);
@@ -13,8 +13,8 @@ function setup() {
 
 
     setInterval(function() {
-        r = round(random(4));
-        loadJSON(urls[r], gotWeather);
+        loadJSON(urls[cnt % urls.length], gotWeather);
+        cnt++;
     }, 2000);
  
   
@@ -22,26 +22,18 @@ function setup() {
 
 function draw() {
     background(200, 50);
-
-    // for (let i = 0; i < tcs.length; i++) {
-        tc.draw();
-    // }
-
+    tc.draw();
 }
 
 function gotWeather(weather) {
-
     // console.log(weather);
     // console.log(weather.location.name);
-
     let l = weather.location.name;
     let t = floor(weather.current.temp_c);
-
     tc.setLocation(l);
     tc.setTemp(t);
 
 }
-
 
 class TempCircle {
     constructor(_x, _y) {
@@ -63,7 +55,7 @@ class TempCircle {
 
     draw() {
         colorMode(HSB);
-        let hue = map(this.temp, -10, 40, 240, 0);
+        let hue = map(this.temp, -5, 10, 240, 0);
         fill(hue, 100, 100, 0.1);
         rect(0, 0, width, height);
 
@@ -75,8 +67,6 @@ class TempCircle {
         text(this.temp, width/2, height/2 + this.textSize * 2);
         textSize(this.textSize);
         text(this.location, this.x - this.textSize - 10, this.y - this.textSize - 10);
-        
-
     }
 
 }
