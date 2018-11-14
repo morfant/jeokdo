@@ -1,4 +1,8 @@
-var walkers = [];
+let weather;
+let geo = undefined;
+let walkers = [];
+let time = 0;
+let place = 'oslo';
 
 class Walker{
     constructor(_size, _rand_x, _rand_y, _col) {
@@ -10,21 +14,70 @@ class Walker{
         this.rand_y = _rand_y;
     }
 
-    move() {
-        this.x = this.x + random(-this.rand_x, this.rand_x);
-        this.y = this.y + random(-this.rand_y, this.rand_y);
+    move(wind) {
+        this.x = this.x + random(-this.rand_x, this.rand_x) + wind.x;
+        this.y = this.y + random(-this.rand_y, this.rand_y) + wind.y;
+
+        if (this.x < 0) this.x = width;
+        if (this.x > width) this.x = 0;
+        if (this.y < 0) this.y = height;
+        if (this.y > height) this.y = 0;
     }
 
-    show() {
-        stroke(255);
-        strokeWeight(3);
-        noStroke();
-        fill(155, 100, this.color);
+    show(temp) {
+        colorMode(HSB);
+        let hue = map(temp, -10, 40, 240, 0);
+        fill(hue, 100, 100, 0.5);
         ellipse(this.x, this.y, this.size, this.size);
     }
 }
 
+function preload() {
+
+    let url = 'https://api.apixu.com/v1/current.json?key=96a9971dd31a456e9ce103938180411&q=' + place;
+    weather = loadJSON(url);
+
+
+    // if (geo != undefined) {
+    //     console.log(geo["status"]);
+    //     console.log(geo.results);
+
+    //     let lat = geo.results[0].geometry.location.lat;
+    //     let lng = geo.results[0].geometry.location.lng; 
+
+    //     // let time_url = "http://api.geonames.org/timezoneJSON?lat=37.621&lng=126.92&username=xman";
+    //     let time_url = "http://api.geonames.org/timezoneJSON?lat=" + lat + "&lng=" + lng + "&username=xman";
+    //     time = loadJSON(time_url);
+    //     console.log(time);
+
+    // }
+
+
+}
+
+function getGeo(geo) {
+    // console.log(geo);
+    let lat = geo.results[0].geometry.location.lat;
+    let lng = geo.results[0].geometry.location.lng; 
+
+    let time_url = "http://api.geonames.org/timezoneJSON?lat=" + lat + "&lng=" + lng + "&username=xman";
+    loadJSON(time_url, getTime);
+    // console.log(time);
+
+}
+
+function getTime(time) {
+
+    console.log(time);
+    console.log(time.time);
+
+}
+
 function setup() {
+
+    let geo_url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + place + '&key=AIzaSyBP-VSHqfXwVyudRlQOnyhaIK4B3LrCnN4';
+    loadJSON(geo_url, getGeo);
+
     createCanvas(600, 600);
     background(0);
     
@@ -35,11 +88,33 @@ function setup() {
 }
 
 function draw() {
-    background(0);
+
+    let place = weather.location.name;
+    let temp = weather.current.temp_c;
+    let isDay = weather.current.is_day;
+    let windDegree = weather.current.wind_degree - 90 + 180;
+    let windKPH = weather.current.wind_kph;
+    let rain = weather.current.precip_mm;
+
+    // let currentTime = time.rawOffset;
+    // console.log(time);
     
-    for (let i = 0; i < 200; i++) {
-        walkers[i].move();
-        walkers[i].show();
+    let windVector = p5.Vector.fromAngle(radians(windDegree), windKPH/2);
+
+    colorMode(RGB);
+    textSize(40);
+    if (isDay == 0) {
+        background(0);
+        fill(255);
+    } else {
+        background(255);
+        fill(0);
+    }
+    text(place, width/2, 100);
+
+   for (let i = 0; i < 200; i++) {
+        walkers[i].move(windVector);
+        walkers[i].show(temp);
     }
     
 }

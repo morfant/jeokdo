@@ -7,7 +7,7 @@ var position;
 function setup() {
   createCanvas(720, 200);
   // Request the data from apixu.com
-//   var url = 'https://api.apixu.com/v1/current.json?key=513d8003c8b348f1a2461629162106&q=NYC';
+  // var url = 'https://api.apixu.com/v1/current.json?key=513d8003c8b348f1a2461629162106&q=NYC';
   var url = 'https://api.apixu.com/v1/current.json?key=96a9971dd31a456e9ce103938180411&q=seoul';
   loadJSON(url, gotWeather);
   // Circle starts in the middle
@@ -56,7 +56,9 @@ function gotWeather(weather) {
   
   console.log(weather)
   // Get the angle (convert to radians)
-  var angle = radians(Number(weather.current.wind_degree));
+  console.log(weather.current.wind_degree);
+  var angle = radians(Number(weather.current.wind_degree) - 90 + 180);
+  console.log(angle);
   // Get the wind speed
   var windmag = Number(weather.current.wind_mph);
   
