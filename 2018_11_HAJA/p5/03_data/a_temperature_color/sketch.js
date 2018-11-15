@@ -1,6 +1,6 @@
 let urls = [];
-let count = 0;
-let tempCircle;
+let cnt = 0;
+let tempRect;
 
 function setup() {
     createCanvas(600, 600);
@@ -13,8 +13,8 @@ function setup() {
     urls[3] = 'https://api.apixu.com/v1/current.json?key=96a9971dd31a456e9ce103938180411&q=Helsinki';
 
     setInterval(function() {
-        loadJSON(urls[count%4], gotWeather);
-        count++;
+        loadJSON(urls[cnt % urls.length], gotWeather);
+        cnt++;
     }, 2000);
  
   
@@ -30,7 +30,6 @@ function gotWeather(weather) {
     // console.log(weather.location.name);
     let l = weather.location.name;
     let t = floor(weather.current.temp_c);
-
     tempCircle.setLocation(l);
     tempCircle.setTemp(t);
 
@@ -69,7 +68,6 @@ class TempCircle {
         textSize(this.textSize * 4);
         text(this.temp, width/2, height/2 + this.textSize * 2); // temp
         textSize(this.textSize);
-        text(this.location, this.x - this.textSize - 10, this.y - this.textSize - 10); // location name
-
+        text(this.location, this.x - this.textSize - 10, this.y - this.textSize - 10);
     }
 }

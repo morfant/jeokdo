@@ -1,8 +1,17 @@
-let weather;
-let geo = undefined;
+let places = ['seoul', 'daegu', 'busan', 'helsinki', 'moscow', 'london', 'nyc', 'rome', 'madrid', 'berlin', 'tokyo'];
+let count = 0;
+let place = places[0];
+
+let placeName, temp, windDegree, windKPH;
+let windVector = undefined;
+
+let h = 0;
+let m = 0;
+let timeAsMinute, timeToPi;
+let brightnessWithTime = 0;
+
 let walkers = [];
-let time = 0;
-let place = 'oslo';
+
 
 class Walker{
     constructor(_size, _rand_x, _rand_y, _col) {
@@ -28,31 +37,28 @@ class Walker{
         colorMode(HSB);
         let hue = map(temp, -10, 40, 240, 0);
         fill(hue, 100, 100, 0.5);
+        noStroke();
         ellipse(this.x, this.y, this.size, this.size);
     }
 }
 
-function preload() {
 
+function updateData() {
+    // start to run in sequence : getWeather() -> getGeo() -> getTime()
     let url = 'https://api.apixu.com/v1/current.json?key=96a9971dd31a456e9ce103938180411&q=' + place;
-    weather = loadJSON(url);
+    loadJSON(url, getWeather);
+}
 
+function getWeather(weather) {
 
-    // if (geo != undefined) {
-    //     console.log(geo["status"]);
-    //     console.log(geo.results);
+    placeName = weather.location.name;
+    temp = weather.current.temp_c;
+    windDegree = weather.current.wind_degree - 90 + 180;
+    windKPH = weather.current.wind_kph;
+    windVector = p5.Vector.fromAngle(radians(windDegree), windKPH/2);
 
-    //     let lat = geo.results[0].geometry.location.lat;
-    //     let lng = geo.results[0].geometry.location.lng; 
-
-    //     // let time_url = "http://api.geonames.org/timezoneJSON?lat=37.621&lng=126.92&username=xman";
-    //     let time_url = "http://api.geonames.org/timezoneJSON?lat=" + lat + "&lng=" + lng + "&username=xman";
-    //     time = loadJSON(time_url);
-    //     console.log(time);
-
-    // }
-
-
+    let geo_url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + place + '&key=AIzaSyBP-VSHqfXwVyudRlQOnyhaIK4B3LrCnN4';
+    loadJSON(geo_url, getGeo);
 }
 
 function getGeo(geo) {
@@ -63,58 +69,53 @@ function getGeo(geo) {
     let time_url = "http://api.geonames.org/timezoneJSON?lat=" + lat + "&lng=" + lng + "&username=xman";
     loadJSON(time_url, getTime);
     // console.log(time);
-
 }
 
 function getTime(time) {
+    h = Number(time.time.split(' ')[1].split(':')[0]);
+    m = Number(time.time.split(' ')[1].split(':')[1]);
+    // console.log(h);
+    // console.log(m);
 
-    console.log(time);
-    console.log(time.time);
-
+    timeAsMinute = 60 * h + m;
+    timeToPi = map(timeAsMinute, 0, 60*24, 0, TWO_PI);
+    brightnessWithTime = 1 - (cos(timeToPi)+1)/2;
 }
 
 function setup() {
 
-    let geo_url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + place + '&key=AIzaSyBP-VSHqfXwVyudRlQOnyhaIK4B3LrCnN4';
-    loadJSON(geo_url, getGeo);
+    updateData('seoul');
 
     createCanvas(600, 600);
     background(0);
     
     for (let i = 0; i < 200; i++) {
-        walkers[i] = new Walker(20, 5, 5, 10);
+        walkers[i] = new Walker(20, 2, 2, 10);
     }
-    
 }
 
 function draw() {
-
-    let place = weather.location.name;
-    let temp = weather.current.temp_c;
-    let isDay = weather.current.is_day;
-    let windDegree = weather.current.wind_degree - 90 + 180;
-    let windKPH = weather.current.wind_kph;
-    let rain = weather.current.precip_mm;
-
-    // let currentTime = time.rawOffset;
-    // console.log(time);
-    
-    let windVector = p5.Vector.fromAngle(radians(windDegree), windKPH/2);
-
     colorMode(RGB);
-    textSize(40);
-    if (isDay == 0) {
-        background(0);
-        fill(255);
-    } else {
-        background(255);
-        fill(0);
-    }
-    text(place, width/2, 100);
+    // background(brightnessWithTime * 60, brightnessWithTime * 115, brightnessWithTime * 205, brightnessWithTime * 55);
+    background(brightnessWithTime * 60, brightnessWithTime * 115, brightnessWithTime * 205, 55);
 
-   for (let i = 0; i < 200; i++) {
-        walkers[i].move(windVector);
+    fill(255);
+    textSize(40);
+    text(placeName, width/2, 100);
+    if (h != undefined && m != undefined) {
+        if (String(h).length < 2) h = '0' + h;
+        if (String(m).length < 2) m = '0' + m;
+    }
+    text(h + " : " + m , width/2, 300);
+    text(temp, width/2, 500);
+
+    for (let i = 0; i < 200; i++) {
+        if (windVector != undefined) walkers[i].move(windVector);
         walkers[i].show(temp);
     }
-    
+}
+
+function mouseClicked() {
+    place = places[count++%places.length];
+    updateData();
 }
