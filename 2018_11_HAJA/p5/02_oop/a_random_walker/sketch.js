@@ -18,8 +18,8 @@ class Walker{
     show() {
         stroke(255);
         strokeWeight(3);
-        noStroke();
-        fill(155, 100, this.color);
+        noStroke(); 
+        fill(50 + this.color, 100 + this.color, 200 + this.color);
         ellipse(this.x, this.y, this.size, this.size);
     }
 }
@@ -29,7 +29,7 @@ function setup() {
     background(0);
     
     for (let i = 0; i < 200; i++) {
-        walkers[i] = new Walker(20, 5, 5, 10);
+        walkers[i] = new Walker(20, 5, 5, random(255));
     }
     
 }
