@@ -1,4 +1,4 @@
-let places = ['seoul', 'daegu', 'busan', 'helsinki', 'moscow', 'london', 'nyc', 'rome', 'madrid', 'berlin', 'tokyo'];
+let places = ['Seoul', 'Helsinki', 'Moscow', 'London', 'NYC', 'Rome', 'Madrid', 'Berlin', 'Tokyo'];
 let count = 0;
 let place = places[0];
 
@@ -13,6 +13,7 @@ let brightnessWithTime = 0;
 let walkers = [];
 
 
+// Class
 class Walker{
     constructor(_size, _rand_x, _rand_y, _col) {
         this.x = width/2;
@@ -42,49 +43,35 @@ class Walker{
     }
 }
 
-
+// Custom function
 function updateData() {
-    // start to run in sequence : getWeather() -> getGeo() -> getTime()
-    let url = 'https://api.apixu.com/v1/current.json?key=96a9971dd31a456e9ce103938180411&q=' + place;
+    let url = 'https://api.apixu.com/v1/current.json?key=' + apixu_API_key + '&q=' + place;
     loadJSON(url, getWeather);
 }
 
 function getWeather(weather) {
-
     placeName = weather.location.name;
     temp = weather.current.temp_c;
     windDegree = weather.current.wind_degree - 90 + 180;
     windKPH = weather.current.wind_kph;
     windVector = p5.Vector.fromAngle(radians(windDegree), windKPH/2);
+    localTime = weather.location.localtime;
 
-    let geo_url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + place + '&key=AIzaSyBP-VSHqfXwVyudRlQOnyhaIK4B3LrCnN4';
-    loadJSON(geo_url, getGeo);
-}
-
-function getGeo(geo) {
-    // console.log(geo);
-    let lat = geo.results[0].geometry.location.lat;
-    let lng = geo.results[0].geometry.location.lng; 
-
-    let time_url = "http://api.geonames.org/timezoneJSON?lat=" + lat + "&lng=" + lng + "&username=xman";
-    loadJSON(time_url, getTime);
-    // console.log(time);
+    getTime(localTime);
 }
 
 function getTime(time) {
-    h = Number(time.time.split(' ')[1].split(':')[0]);
-    m = Number(time.time.split(' ')[1].split(':')[1]);
-    // console.log(h);
-    // console.log(m);
+    h = Number(time.split(' ')[1].split(':')[0]);
+    m = Number(time.split(' ')[1].split(':')[1]);
 
     timeAsMinute = 60 * h + m;
     timeToPi = map(timeAsMinute, 0, 60*24, 0, TWO_PI);
     brightnessWithTime = 1 - (cos(timeToPi)+1)/2;
 }
 
+// p5 basic functions
 function setup() {
-
-    updateData('seoul');
+    updateData();
 
     createCanvas(600, 600);
     background(0);
@@ -96,7 +83,6 @@ function setup() {
 
 function draw() {
     colorMode(RGB);
-    // background(brightnessWithTime * 60, brightnessWithTime * 115, brightnessWithTime * 205, brightnessWithTime * 55);
     background(brightnessWithTime * 60, brightnessWithTime * 115, brightnessWithTime * 205, 55);
 
     fill(255);
@@ -115,6 +101,7 @@ function draw() {
     }
 }
 
+// mouse click handle function
 function mouseClicked() {
     place = places[count++%places.length];
     updateData();

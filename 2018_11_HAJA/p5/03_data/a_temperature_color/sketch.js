@@ -1,4 +1,7 @@
+let places = ['seoul', 'moscow', 'Paris', 'london', 'helsinki'];
 let urls = [];
+// let apixu_API_key = "70dae7de13734a499bb124043181511";
+
 let cnt = 0;
 let tempRect;
 
@@ -7,15 +10,14 @@ function setup() {
     createCanvas(600, 600);
     tempRect = new TempRect();
 
-    urls[0] = 
-    urls[1] = 
-    urls[2] = 
-    urls[3] = 
+    for (let i = 0; i < places.length; i++) {
+        urls[i] = 'https://api.apixu.com/v1/current.json?key=' + apixu_API_key + '&q=' + places[i];
+    }
 
     setInterval(function() {
         loadJSON(urls[cnt % urls.length], gotWeather);
         cnt++;
-    }, 2000);
+    }, 5000);
 
 }
 
