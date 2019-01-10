@@ -1,4 +1,4 @@
-var current = ['F', 'R', 'F']
+var current = [...'FLLFLLF']
 // var current = [...'FRFRFRF']
 var next = [] 
 var count = 0
@@ -25,13 +25,21 @@ function draw() {
 	line(0, height/2, width, height/2)
 	line(width/2, 0, width/2, height)
 
-	var step_size = 2 
+	// Angle in degrees
+	var angle = 60 
+	var step_size = 10 
+
+	// target angle (also initial angle)
+	var ta = 0 
+
 	var tx = width/2
+	var tx = 0
 	var ty = height
-	var angle = 30 
 
-	var ta = 90 
 
+	push()
+	// translate(tx, ty)
+	// rotate(0)
 	if (count > 0) {
 		// console.log(current)
 		stroke("pink")
@@ -43,10 +51,8 @@ function draw() {
 				line(tx, ty, new_x, new_y)
 				tx = new_x
 				ty = new_y
-
 			} else if (c == 'L') {
 				ta += angle
-
 			} else if (c == 'R') {
 				ta -= angle
 			} else if (c == '[') {
@@ -60,10 +66,9 @@ function draw() {
 			} else {
 
 			}
-
-
 		}
 	}
+	pop()
 
 
 }
@@ -72,12 +77,14 @@ function mouseClicked() {
 
 	next = []
 	for (var c of current) {
+		// Rules
 		if (c == 'F') {
 			// next.push('R', 'F', 'L', 'F')
 			// next.push('F', '[', 'L', 'F', ']', 'F', '[', 'R', 'F', ']')
-			next.push(...'F[LF]F[RF]')
+			// next.push(...'F[LF]F[RF]')
 			// next.push(...'FRFLFLFFRFRFLF')
 			// next.push(...'FLFFRFFRFRFLFLFFRFRFLFLFFLFFRF')
+			next.push(...'F[LLF]F') 
 		} else {
 			next.push(c)
 		}
