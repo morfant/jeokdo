@@ -1,6 +1,7 @@
 // var current = [...'F']
 // var current = [...'F[LLF]FR[RF]']
-var current = [...'FRFRFRFR]']
+// var current = [...'F-F-F-F]']
+var current = [...'G]']
 // var current = [...'FRFRFRF']
 var next = [] 
 var count = 0
@@ -9,7 +10,7 @@ var s = []
 
 function setup() {
     
-	createCanvas(900, 1200);
+	createCanvas(800, 800);
 	angleMode(DEGREES)
 	colorMode(HSB)
 
@@ -31,24 +32,24 @@ function setup() {
 
 function draw() {
 
-	background(255)
+	background(0)
 	// Angle in degrees
-	var angle = 120 
-	var step_size = 10
+	var theta = 60 
+	var step_size = 5 
 	var step_radius = 10 
 	var wind = 10
 
-	// Initial angle, position
-	var ta = 0
-	var tx = width/2 
+	// Initial theta, position
+	var ta = 30 
+	var tx = 0 
 	var ty = height
 	var th = 0
 	var th_step = 3
 	var hue_max = 230
 	var hue_min = 100
 
-	stroke(0, 100, 100, 0.1)
-	fill(th, 100, 100, 0.1)
+	stroke(200, 100, 100)
+	fill(count * 10, 100, 100)
 	strokeWeight(1)
 
 	if (current.length > 0) {
@@ -61,12 +62,42 @@ function draw() {
 				line(tx, ty, new_x, new_y)
 				tx = new_x
 				ty = new_y
-			} else if (c == 'L') {
-				ta += angle
-				// ta += (angle + wind * noise(frameCount/20)) 
-			} else if (c == 'R') {
-				ta -= angle
-				// ta -= (angle + (1 - noise(frameCount/20))) 
+			} else if (c == 'D') { // F+F
+				var new_x = tx + (step_size * cos(ta))
+				var new_y = ty - (step_size * sin(ta))
+				line(tx, ty, new_x, new_y)
+				tx = new_x
+				ty = new_y
+				ta += theta
+				var new_x = tx + (step_size * cos(ta))
+				var new_y = ty - (step_size * sin(ta))
+				line(tx, ty, new_x, new_y)
+				tx = new_x
+				ty = new_y
+
+			} else if (c == 'G') { // F-F
+				var new_x = tx + (step_size * cos(ta))
+				var new_y = ty - (step_size * sin(ta))
+				line(tx, ty, new_x, new_y)
+				tx = new_x
+				ty = new_y
+				ta -= theta
+				var new_x = tx + (step_size * cos(ta))
+				var new_y = ty - (step_size * sin(ta))
+				line(tx, ty, new_x, new_y)
+				tx = new_x
+				ty = new_y
+			} else if (c == 'f') {
+				var new_x = tx + (step_size * cos(ta))
+				var new_y = ty - (step_size * sin(ta))
+				tx = new_x
+				ty = new_y
+			} else if (c == '+') { // left
+				ta += theta
+				// ta += (theta + wind * noise(frameCount/20)) 
+			} else if (c == '-') { // right
+				ta -= theta
+				// ta -= (theta + (1 - noise(frameCount/20))) 
 			} else if (c == '[') {
 				s.push(tx)
 				s.push(ty)
@@ -105,9 +136,14 @@ function mouseClicked() {
 			// next.push(...'FLFFRFFRFRFLFLFFRFRFLFLFFLFFRF')
 			// next.push(...'F[LLF]F') 
 			// next.push(...'F[HRF]F[LFC]')
-			next.push(...'F[HLF]FC')
-			
-
+			// next.push(...'F+f-FF+F+FF+Ff+FF-f+FF-F-FF-Ff-FFF')
+			next.push(...'FF-F-F-F-FF')
+		} else if (c == 'f') {
+			next.push(...'ffffff')
+		} else if (c == 'D'){ // F+F : foward, turn left, foward
+			next.push(...'G+D+G')
+		} else if (c == 'G'){ // F-F : foward, turn right, foward
+			next.push(...'D-G-D')
 		} else {
 			next.push(c)
 		}
