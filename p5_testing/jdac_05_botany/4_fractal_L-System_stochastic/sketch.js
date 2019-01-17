@@ -129,7 +129,8 @@ function mouseClicked() {
 			let r = random(1)
 			var result = ""
 			if (r > 0 && r < 0.33) {
-				result = "F[+F]F[-F]F"
+				// result = "F[+F]F[-F]F"
+				result = "FF-[-F+F+F]+[+F-F-F]"
 			}
 			else if (r < 0.66) {
 				result = "F[+F]F"
