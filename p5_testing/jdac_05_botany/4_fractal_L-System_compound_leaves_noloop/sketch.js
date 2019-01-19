@@ -2,13 +2,7 @@ var current = [...'A0;']
 var axiom = current
 var next = []
 var count = 0
-var posY = 20
 var s = []
-
-var c = 0
-var p = 0
-var q = 0
-var h = 0
 
 var D = 0
 var R = 0
@@ -22,60 +16,41 @@ function setup() {
 	angleMode(DEGREES)
 	colorMode(HSB)
 
-	background(255);
-	stroke(255, 100);
-	strokeWeight(0.5)
-	noFill();
+	D = 4 // density of lines
+	R = 1.12 // how toll ? 
 
-
-	stroke("grey")
-	strokeWeight(0.3)
-	line(0, height / 2, width, height / 2)
-	line(width / 2, 0, width / 2, height)
-
-	// noLoop()
-
-	// c = 1
-	// p = 0.3
-	// q = c - p
-	// h = pow((p * q), 0.5)
-	// h = round(h * 100) / 100
-
-	D = 7 
-	R = 1.17 
-
-	// console.log(current.join(''))
-
+	for (let i = 0; i < 30; i++) {
+		getResult()
+	}
+	// console.log(current.join(''));
+	noLoop()
 }
 
 
 function draw() {
 
 	background(197, 42, 63, 0.5)
+
 	// Angle in degrees
-	var theta = 60 
-	var step_size = 0.5
-	var step_radius = 2000
-	// step_size = slider.value()
-	// step_radius = slider.value()/100
-	var wind = 10
+	var theta = 30 
+	var step_size = 2 
+	var step_radius = 5 
 
 	// Initial theta, position
 	var ta = 90 
 	var tx = width/2 
 	var ty = height 
-	var th = 0
-	var th_step = 3
-	var hue_max = 230
-	var hue_min = 180
+	var th_step = 0.003
+	var hue_max = 80 
+	var hue_min = 40
+	var th = hue_min 
+	col = th
 
 	// stroke(200, 100, 100)
 	stroke(0, 0, 90)
 	fill(count * 10, 100, 100)
 	strokeWeight(1)
 
-	push()
-	// translate(mouseX, mouseY)
 	if (current.length > 0) {
 		// stroke(100, random(150), 150, 255 - (count * 20))
 		// stroke("SteelBlue")
@@ -85,7 +60,8 @@ function draw() {
 			if (c == 'F') {
 
 				stroke(col, 80, 90)
-				// noStroke()
+				strokeWeight(2)
+				// noStroke(0)
 				let val = []
 				for (let j = 1; j < 10; j++) {
 					let v = current[i + j]
@@ -199,6 +175,7 @@ function draw() {
 				tx = s.pop()
 			} else if (c == 'C') {
 				noStroke()
+				fill(100, 100, 100)
 				ellipse(tx, ty, step_radius)
 			} else if (c == 'H') {
 				th += th_step
@@ -210,13 +187,10 @@ function draw() {
 			}
 		}
 	}
-	pop()
 }
 
-function mouseClicked() {
-
+function getResult() {
 	next = []
-	// for (var c of current) {
 	for (var i = 0; i < current.length; i++) {
 
 		let c = current[i]
@@ -235,7 +209,6 @@ function mouseClicked() {
 			}
 			x = parseFloat(val.join(''))
 			var t = x * R
-
 			next.push(..."F"+t+";")
 		} else if (c == "A") {
 			let val = []
@@ -250,15 +223,15 @@ function mouseClicked() {
 			x = parseFloat(val.join(''))
 
 			if (x == 0) {
-				next.push(..."F1;[+;A"+D+";][-;A"+D+";]F1;A0;")
+				next.push(..."F1;H[+;A"+D+";][-;A"+D+";]F1;HA0;")
 			} else if (x > 0) {
 				var t = x - 1
 				next.push(..."A"+t+";")
 			}
 		} else if ('0123456789'.indexOf(c) === -1) {
 			// if (c !== ";") {
-				console.log("not number")
-				console.log(c)
+				// console.log("not number")
+				// console.log(c)
 				next.push(c)
 			// }
 		}
@@ -267,9 +240,9 @@ function mouseClicked() {
 	current = next
 	// console.log(current)
 	// console.log(current.join(''))
-	count++
-}
+	// count++
 
+}
 
 function keyPressed() {
 	if (keyCode === UP_ARROW) {
