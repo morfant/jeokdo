@@ -11,13 +11,6 @@ function setup() {
     sliderN = createSlider(1, 10, 4, 1);
     sliderD = createSlider(1, 10, 3, 1);
     sliderC = createSlider(-200, 200, 0, 1);
-//    pn = createP('');
-//    pn.id('text_n');
-//    pd = createP('');
-//    pd.id('text_d');
-//    pc = createP('');
-//    pc.id('text_c');
-//    pn.position(0, height + 20);
     off = 0;
     offl = 0;
     coff = 0;
@@ -31,8 +24,6 @@ function draw() {
     n = sliderN.value();
     d = sliderD.value();
     coff = sliderC.value();
-    
-//    pn.innerHTML = n;
     
     k = n/d;
     
@@ -64,7 +55,5 @@ function draw() {
         vertex(x, y);
     }
     endShape(CLOSE);
-    
-    
     
 }

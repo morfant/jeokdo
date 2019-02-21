@@ -8,7 +8,6 @@ function setup() {
 
 function draw() {
     background(255);
-
     for (var i = 100; i > 0; i = i - 3) {
         strokeWeight(i / 100);
         ellipse(posX, posY, i, i);
