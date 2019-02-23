@@ -84,7 +84,7 @@ function mouseClicked() {
 			// next.push(...'F[LF]F[RF]')
 			// next.push(...'FRFLFLFFRFRFLF')
 			// next.push(...'FLFFRFFRFRFLFLFFRFRFLFLFFLFFRF')
-			next.push(...'F[LLF]F') 
+			next.push(...'F[LLF]FF') 
 		} else {
 			next.push(c)
 		}

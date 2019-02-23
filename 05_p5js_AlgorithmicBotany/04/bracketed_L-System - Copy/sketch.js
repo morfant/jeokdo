@@ -3,26 +3,27 @@ var next = "";
 var s = [];
 var count = 0;
 var textPosY = 0;
-var n = 2; 
+var n = 5; 
 
 function setup() {
 
 	createCanvas(900, 900);
 	angleMode(DEGREES);
 
-	background(50);
-	stroke(255);
 	noFill();
 
 	// Axiom
-	current = "F+F+F+F";
+	current = "F";
 
 	// Rules
 	for (var i = 0; i < n; i++) {
 		for (var c of current) {
 			if (c == "F") {
-				next += "F+F-F-FF+F+F-F";
-			} else {
+				next += "FF+[+F-F-F]-[-F+F+F]";
+			} else if (c == "X") {
+				next += "F-[[X]+X]+F[+FX]-X";
+			}
+			else {
 				next += c;
 			}
 		}
@@ -32,6 +33,8 @@ function setup() {
 		next = "";
 	}
 
+	// noLoop();
+
 }
 
 
@@ -39,8 +42,9 @@ function draw() {
 
 
 
+	// 시작점
 	// 기준점 이동, 위 방향을 각도 0으로 하기 위한 조정
-	translate(width / 2, height / 2);
+	translate(width / 2, height);
 	rotate(-90);
 
 	// turtle graphics
@@ -48,9 +52,11 @@ function draw() {
 	var x = 0;
 	var y = 0;
 	var angle = 0;
-	var angleStep = 90;
+	var theta = 22.5;
 	var step_size = 10;
 
+	background(50);
+	stroke(255);
 
 	// index 없는 for..of 구문 
 	// https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Statements/for...of
@@ -70,9 +76,9 @@ function draw() {
 			x = new_x; // 기준점 이동 x
 			y = new_y; // 기준점 이동 y
 		} else if (c == '-') { // Turn Left
-			angle += angleStep;
+			angle += theta;
 		} else if (c == '+') { // Turn Right
-			angle -= angleStep;
+			angle -= theta;
 		} else if (c == '[') { // Save 
 			s.push(x); // Array 의 push(), pop()
 			s.push(y);
