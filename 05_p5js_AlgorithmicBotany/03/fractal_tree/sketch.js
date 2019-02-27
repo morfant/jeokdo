@@ -14,14 +14,14 @@ function draw() {
     translate(width/2, height);
 
 	drawBranch(150);
-	noLoop(); // draw()를 한 번만 실행하게 한다.
+	noLoop(); // draw()를 한 번만 실행하게 합니다.
 }
 
 
 function drawBranch(len) {
 
 	// +, -, *, / 가 함께 있을 때의 우선 순위: *, / -> +, -
-	// 그러나 적당히 괄호를 사용하는 것이 보기에도 좋고 안전하다.
+	// 그러나 적당히 괄호를 사용해 묶어 주는 것이 보기에도 좋고 안전한 방법입니다.
 	stroke(80, 20 + (105 * len/150), 20 + (105 * len/150));
 	strokeWeight(10 * len/150);
 

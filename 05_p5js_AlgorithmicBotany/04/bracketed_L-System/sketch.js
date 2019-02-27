@@ -79,11 +79,16 @@ function draw() {
 			angle += theta;
 		} else if (c == '+') { // Turn Right
 			angle -= theta;
+
+		// Bracket([, ]) 의 구현 
+		// 이것으로 인해 한 지점에서 분기 되는 가지 모양을 그릴 수 있습니다. 
+		// Array 의 push(), pop()
 		} else if (c == '[') { // Save 
-			s.push(x); // Array 의 push(), pop()
-			s.push(y);
+			s.push(x); 
+			s.push(y); // stack 구조로, 먼저 입력 된 것이 가장 아래에 쌓여 있게 됩니다. 
 			s.push(angle);
 		} else if (c == ']') { // Restore
+			 // 따라서 push()를 통해 입력한 결과를 pop()을 통해 꺼내 올때는 입력 순서의 역순이 되어야 합니다. 
 			angle = s.pop();
 			y = s.pop();
 			x = s.pop();
