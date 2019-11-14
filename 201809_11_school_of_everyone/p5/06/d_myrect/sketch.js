@@ -1,15 +1,23 @@
+
+var pdf;
 var rects = [];
+var captureImage = false;
 
 function setup() {
+
+
+
     createCanvas(innerWidth, innerHeight);
     // createCanvas(windowWidth,windowHeight);
 
     angleMode(DEGREES);
 
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 80; i++) {
         rects[i] = new Rect(random(0, width), random(0, height), random(-3, 3), random(-3, 3));
     }
 
+    pdf = createPDF();
+    pdf.beginRecord();
     background(0);
 }
 
@@ -35,5 +43,16 @@ function draw() {
 
     }
 
+    if (captureImage === true) {
+        pdf.save();
+        captureImage = false;
+    }
 
+}
+
+
+function keyTyped() {
+    if (key === 'c') {
+        captureImage = true;
+    }
 }

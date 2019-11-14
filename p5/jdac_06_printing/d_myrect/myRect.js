@@ -1,20 +1,18 @@
 
-class Rect {
-    constructor(_x, _y, _vx, _vy) {
-        this.x = _x;
-        this.y = _y;
-        this.vx = _vx;
-        this.vy = _vy;
-        this.age = 0;
-        this.rx = 300;
-        this.ry = 300;
-        this.levelx = 0;
-        this.levely = 0;
-        this.powerx = 1;
-        this.powery = 1;
-    }
-    
-    move() {
+function Rect(_x, _y, _vx, _vy) {
+    this.x = _x;
+    this.y = _y;
+    this.vx = _vx;
+    this.vy = _vy;
+    this.age = 0;
+    this.rx = 300;
+    this.ry = 300;
+    this.levelx = 0;
+    this.levely = 0;
+    this.powerx = 1;
+    this.powery = 1;
+
+    this.move = function() {
         this.x = this.x + this.vx;
         this.y = this.y + this.vy;
 
@@ -37,7 +35,7 @@ class Rect {
 
     }
 
-    getAge() {
+    this.getAge = function() {
 
         if (this.levelx > 2) {
             if (this.powerx < 245) this.powerx += 1;
@@ -53,7 +51,7 @@ class Rect {
 
     }
 
-    draw() {
+    this.draw = function() {
         push();
 
         if (this.powerx > this.powery) {
@@ -71,6 +69,6 @@ class Rect {
         pop();
     }
 
-    
-}
 
+
+}
